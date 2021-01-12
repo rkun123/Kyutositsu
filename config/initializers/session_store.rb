@@ -1,0 +1,1 @@
+C3SNS::Application.config.session_store :cookie_store, key:'c3sns_session'
