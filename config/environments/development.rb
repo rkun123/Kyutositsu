@@ -56,4 +56,7 @@ Rails.application.configure do
     host: 'localhost',
     post: 3000
   }
+
+  config.session_store :redis_store, servers: 'redis://localhost:6379', expire_after: 1.day
+
 end

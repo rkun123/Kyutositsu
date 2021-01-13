@@ -12,4 +12,9 @@ class Api::V1::OmniauthCallbacksController < DeviseTokenAuth::OmniauthCallbacksC
     user
   end
 
+  def redirect_callbacks
+    super
+    puts session.to_s.length
+  end
+
 end
