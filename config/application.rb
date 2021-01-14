@@ -30,13 +30,15 @@ module C3SNS
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
-    # config.api_only = true
+    config.api_only = true
 
     # config.session_store :cookie_store, key: '_interslice_session'
     config.middleware.use Rack::MethodOverride
-    # config.middleware.use ActionDispatch::Cookies # Required for all session management
+    config.middleware.use ActionDispatch::Cookies # Required for all session management
     # config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
+    config.middleware.use ActionDispatch::Session::RedisStore
     config.middleware.use ActionDispatch::Flash
+    config.session_store :redis_store, servers: 'redis://localhost:6379', expire_after: 1.day
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
