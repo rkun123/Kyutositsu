@@ -6,12 +6,12 @@ class Api::V1::PostsController < ApplicationController
   def index
     @posts = Post.all
 
-    render json: @posts
+    render json: @posts, include: :user
   end
 
   # GET /posts/1
   def show
-    render json: @post
+    render json: @post, include: :user
   end
 
   # POST /posts
@@ -20,7 +20,7 @@ class Api::V1::PostsController < ApplicationController
     @post.user_id = current_api_v1_user.id
 
     if @post.save
-      render json: @post, status: :created
+      render json: @post, status: :created, include: :user
     else
       render json: @post.errors, status: :unprocessable_entity
     end
@@ -29,7 +29,7 @@ class Api::V1::PostsController < ApplicationController
   # PATCH/PUT /posts/1
   def update
     if @post.update(post_params)
-      render json: @post
+      render json: @post, include: :user
     else
       render json: @post.errors, status: :unprocessable_entity
     end
