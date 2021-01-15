@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchPost } from '../store/post'
 import { RootState } from '../store/index'
 import Posts from '../components/Posts' 
+import PostEdit from '../components/PostEdit'
 
 
 function Home() {
@@ -15,6 +16,7 @@ function Home() {
 
     return (
         <React.Fragment>
+            <PostEdit />
             <Posts />
         </React.Fragment>
     )

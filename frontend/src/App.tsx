@@ -33,7 +33,7 @@ function App() {
 
   return (
     <div className="App">
-      <AppBar position="absolute" color="default" className={classes.appBar}>
+      <AppBar position="static" color="default" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" color="inherit" className={classes.title}>
             C3SNS

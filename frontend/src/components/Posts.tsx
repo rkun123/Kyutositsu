@@ -6,6 +6,7 @@ import { fetchPost } from '../store/post'
 import PostCard from './PostCard'
 
 function Posts() {
+
     const dispatch = useDispatch()
     const postState = useSelector((state: RootState) => {
         console.log('.')

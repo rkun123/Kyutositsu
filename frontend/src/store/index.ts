@@ -13,6 +13,10 @@ const reducers = combineReducers({
 
 const store = createStore(reducers, applyMiddleware(thunk))
 
+export type APIError = {
+    error: string
+}
+
 export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>
 
 export type RootState = ReturnType<typeof store.getState>

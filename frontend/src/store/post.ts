@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AppThunk } from './index'
+import { AppThunk, APIError } from './index'
 import api from '../utils/api'
 import { User } from './user'
 
@@ -14,16 +14,23 @@ export type Post = {
     update_at: Date
 }
 
+export type EditingPost = {
+    title: string,
+    content: string,
+}
+
 export type PostState = {
     posts: Array<Post>,
     isFetching: boolean,
-    success: boolean
+    success: boolean,
+    error: APIError | null
 }
 
 const initialState = {
     posts: [],
     isFetching: false,
-    success: false
+    success: false,
+    error: null
 } as PostState
 
 const postSlice = createSlice({
@@ -35,12 +42,15 @@ const postSlice = createSlice({
         },
         pushPostToTop(state, action: PayloadAction<Post>) {
             state.posts.splice(0, 0, action.payload)
+        },
+        setError(state, action: PayloadAction<APIError>) {
+            state.error = action.payload
         }
     }
 })
 
 
-export const { setPost, pushPostToTop } = postSlice.actions
+export const { setPost, pushPostToTop, setError } = postSlice.actions
 
 
 export const fetchPost = (): AppThunk => async (dispatch, getState) => {
@@ -62,6 +72,26 @@ export const fetchPost = (): AppThunk => async (dispatch, getState) => {
             posts
         } as PostState))
     }
+}
+
+export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch, getState) => {
+    const { auth } = getState()
+    const res = await api.post('/posts', editingPost, {
+        headers: {
+            'access-token': auth.authToken,
+            'token-type': 'Bearer',
+            'client': auth.client,
+            'uid': auth.uid
+        }
+    })
+    if(res.status === 201) {
+        const post = res.data as Post
+        dispatch(pushPostToTop(post))
+    } else {
+        const error = res.data as APIError
+        setError(error)
+    }
+    
 }
 
 export default postSlice
