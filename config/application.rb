@@ -42,8 +42,11 @@ module C3SNS
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins '*'
-        resource '*'
+        origins 'http://localhost:3001'
+        resource '*',
+          headers: :any,
+          methods: [:get, :post, :options, :head],
+          expose: ['Per-Page', 'Total', 'Link']
       end
     end
   end
