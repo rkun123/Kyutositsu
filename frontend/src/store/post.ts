@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk } from './index'
 import api from '../utils/api'
+import { User } from './user'
 
 
 export type Post = {
@@ -8,6 +9,7 @@ export type Post = {
     title: string,
     content: string,
     user_id: number,
+    user: User,
     created_at: Date,
     update_at: Date
 }

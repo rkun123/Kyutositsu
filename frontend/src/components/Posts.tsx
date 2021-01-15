@@ -21,7 +21,7 @@ function Posts() {
     const posts = postState.posts.map(post => {
         console.info(post)
         return (
-            <PostCard post={post}></PostCard>
+            <PostCard post={post} key={post.id}></PostCard>
         )
     })
 
