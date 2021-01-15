@@ -5,6 +5,7 @@ Rails.application.routes.draw do
         omniauth_callbacks: 'api/v1/omniauth_callbacks'
       }
       resource :users
+      resources :posts
     end
   end
 end
