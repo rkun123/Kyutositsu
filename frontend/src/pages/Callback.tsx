@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
-import { Auth, getAuthAndFetchUser } from '../store/auth'
+import { Auth, initAuth } from '../store/auth'
 
 function Callback() {
     const dispatch = useDispatch()
@@ -15,7 +15,8 @@ function Callback() {
             client: param.get('client_id')!,
             uid: param.get('uid')!
         } as Auth
-        dispatch(getAuthAndFetchUser(auth))
+        dispatch(initAuth(auth))
+        window.localStorage.setItem('sns_auth', JSON.stringify(auth))
         history.push('/')
         
     }, [dispatch, history])

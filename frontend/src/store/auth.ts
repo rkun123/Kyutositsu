@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { AppThunk } from './index'
+import { fetchPost } from './post'
 import { fetchUser } from './user'
 
 export type Auth = {
@@ -19,6 +20,7 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         setAuth(state, action: PayloadAction<Auth>) {
+            console.log('setAuth', action.payload)
             return action.payload
         }
     }
@@ -26,9 +28,10 @@ const authSlice = createSlice({
 
 export const { setAuth } = authSlice.actions
 
-export const getAuthAndFetchUser = (auth: Auth): AppThunk => async (dispatch, getState) => {
+export const initAuth = (auth: Auth): AppThunk => async (dispatch, getState) => {
     dispatch(setAuth(auth))
     dispatch(fetchUser())
+    dispatch(fetchPost())
 }
 
 export default authSlice

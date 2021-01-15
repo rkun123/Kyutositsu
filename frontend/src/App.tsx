@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { RootState } from './store/index'
 import Callback from './pages/Callback'
 import Home from './pages/Home'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Auth, setAuth, initAuth } from './store/auth'
 import { AppBar, makeStyles, Toolbar, Typography, Button, Avatar, Container } from '@material-ui/core';
 
 const useStyle = makeStyles((theme) => ({
@@ -18,8 +19,25 @@ const useStyle = makeStyles((theme) => ({
 }))
 
 function App() {
+  const auth = useSelector((state: RootState) => state.auth)
   const userState = useSelector((state: RootState) => state.user)
   const classes = useStyle()
+  const dispatch = useDispatch()
+
+  const getAuthFromLocalstorage = () => {
+    const localstorageAuthStr = window.localStorage.getItem('sns_auth')
+    if(localstorageAuthStr !== null && localstorageAuthStr !== '') {
+      const localstorageAuth = JSON.parse(localstorageAuthStr) as Auth
+      console.log('localstorageSNSAuth', localstorageAuth)
+      //dispatch(setAuth(localstorageSNSAuth))
+      dispatch(initAuth(localstorageAuth))
+    }
+  }
+
+  useEffect(() => {
+    //if(auth.authToken === '') getAuthFromLocalstorage()
+    getAuthFromLocalstorage()
+  }, [dispatch])
 
   const loginButton = () => {
     if(!userState.success) {

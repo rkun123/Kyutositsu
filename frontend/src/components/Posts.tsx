@@ -14,11 +14,6 @@ function Posts() {
         return state.post
     })
 
-    useEffect(() => {
-        console.log('loadPosts')
-        dispatch(fetchPost())
-    }, [dispatch])
-
     const posts = postState.posts.map(post => {
         console.info(post)
         return (
