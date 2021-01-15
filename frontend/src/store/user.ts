@@ -1,4 +1,7 @@
-import { Action, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppThunk } from './index'
+import api from '../utils/api'
+
 
 export type User = {
     id: number,
@@ -9,25 +12,58 @@ export type User = {
     email: string
 }
 
-const initialState: User = {
-    id: 0,
-    provider: 'discord',
-    uid: '',
-    name: '',
-    image: '',
-    email: ''
+export type UserState = {
+    user: User,
+    isFetching: boolean,
+    success: boolean
 }
+
+const initialState = {
+    user: {
+        id: 0,
+        provider: 'discord',
+        uid: '',
+        name: '',
+        image: '',
+        email: ''
+    },
+    isFetching: false,
+    success: false
+} as UserState
 
 const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setUser(state, action: PayloadAction<User>) {
+        setUser(state, action: PayloadAction<UserState>) {
             return action.payload
         }
     }
 })
 
-export const actions = userSlice.actions
+
+export const { setUser } = userSlice.actions
+
+
+export const fetchUser = (): AppThunk => async (dispatch, getState) => {
+    const { auth } = getState()
+    const res = await api.get('/auth/validate_token', {
+        headers: {
+            'access-token': auth.authToken,
+            'token-type': 'Bearer',
+            'client': auth.client,
+            'uid': auth.uid
+        }
+    })
+    if(res.data.success === true) {
+        const user = res.data.data as User
+        console.info('Success', user)
+        dispatch(setUser({
+            isFetching: false,
+            success: true,
+            user
+        } as UserState))
+    }
+}
 
 export default userSlice
