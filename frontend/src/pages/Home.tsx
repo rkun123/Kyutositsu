@@ -5,6 +5,7 @@ import { fetchPost } from '../store/post'
 import { RootState } from '../store/index'
 import Posts from '../components/Posts' 
 import PostEdit from '../components/PostEdit'
+import { Grid } from '@material-ui/core'
 
 
 function Home() {
@@ -16,7 +17,6 @@ function Home() {
 
     return (
         <React.Fragment>
-            <PostEdit />
             <Posts />
         </React.Fragment>
     )

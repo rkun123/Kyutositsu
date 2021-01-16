@@ -4,14 +4,29 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { RootState } from './store/index'
 import Callback from './pages/Callback'
 import Home from './pages/Home'
+import Drawer from './components/Drawer'
 import { useDispatch, useSelector } from 'react-redux';
 import { Auth, setAuth, initAuth } from './store/auth'
-import { AppBar, makeStyles, Toolbar, Typography, Button, Avatar, Container } from '@material-ui/core';
+import { CssBaseline, AppBar, makeStyles, Toolbar, Typography, Button, Avatar, IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu'
+import { openDrawer } from './store/ui';
 
 const useStyle = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    backgroundColor: theme.palette.background.default,
+    minHeight: '100vh'
+  },
   appBar: {
-    position: 'relative',
-    flexGrow: 1
+    position: 'fixed',
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
   },
   title: {
     flexGrow: 1
@@ -21,8 +36,13 @@ const useStyle = makeStyles((theme) => ({
 function App() {
   const auth = useSelector((state: RootState) => state.auth)
   const userState = useSelector((state: RootState) => state.user)
+  const isDrawerOpen = useSelector((state: RootState) => state.ui.isDrawerOpen)
   const classes = useStyle()
   const dispatch = useDispatch()
+
+  const handleOpenDrawer = () => {
+    dispatch(openDrawer())
+  }
 
   const getAuthFromLocalstorage = () => {
     const localstorageAuthStr = window.localStorage.getItem('sns_auth')
@@ -50,9 +70,16 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className={"App " + classes.root}>
+      <CssBaseline />
       <AppBar position="static" color="default" className={classes.appBar}>
         <Toolbar>
+          <IconButton
+            color="inherit"
+            onClick={handleOpenDrawer}
+          >
+            <MenuIcon />
+          </IconButton>
           <Typography variant="h6" color="inherit" className={classes.title}>
             C3SNS
           </Typography>
@@ -60,14 +87,16 @@ function App() {
           <Avatar src={userState.user.image}></Avatar>
         </Toolbar>
       </AppBar>
-      <Container maxWidth="sm">
+      <Drawer open={isDrawerOpen} />
+      <div>
+        <div className={classes.drawerHeader}></div>
         <Router>
           <Switch>
             <Route path="/callback"><Callback /></Route>
             <Route path="/"><Home /></Route>
           </Switch>
         </Router>
-      </Container>
+      </div>
     </div>
   );
 }

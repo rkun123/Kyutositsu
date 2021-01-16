@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Grid, makeStyles } from '@material-ui/core'
+import { Grid, GridList, makeStyles } from '@material-ui/core'
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from '../store'
 import { fetchPost } from '../store/post'
@@ -23,13 +23,13 @@ function Posts() {
 
     return (
         <React.Fragment>
-            <Grid
-                container
-                alignContent="center"
-                alignItems="center"
+            <GridList
+                cellHeight="auto"
+                spacing={0}
+                cols={6}
             >
                 {posts}
-            </Grid>
+            </GridList>
         </React.Fragment>
     )
 }

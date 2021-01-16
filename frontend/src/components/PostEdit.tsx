@@ -1,4 +1,4 @@
-import { Paper, Grid, FormLabel, TextField, Container, Button, Snackbar, makeStyles } from "@material-ui/core"
+import { Paper, Grid, FormLabel, TextField, Container, Button, Snackbar, makeStyles, Typography } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import { createStyles, withStyles } from "@material-ui/styles"
 import React, { useState, ChangeEvent } from "react"
@@ -7,6 +7,9 @@ import { useDispatch } from "react-redux"
 import { EditingPost, postPost } from "../store/post"
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: `${theme.spacing(5)}px`
+    },
     sendButton: {
         margin: `${theme.spacing(2)}px 0`
     }
@@ -50,35 +53,34 @@ function PostEdit() {
 
     return (
         <React.Fragment>
-            <Paper>
-                <Container>
-                    <form autoComplete="off">
-                        <TextField
-                            required
-                            fullWidth
-                            label="Title"
-                            onChange={setPostTitle}
-                        />
-                        <TextField
-                            required
-                            fullWidth
-                            multiline
-                            rows={6}
-                            label="Content"
-                            onChange={setPostContent}
-                        />
-                    </form>
-                    <Button
-                        className={classes.sendButton}
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        onClick={handlePostButton}
-                    >
-                        送信
-                    </Button>
-                </Container>
-            </Paper>
+            <Container className={classes.root}>
+                <Typography variant="h6">New</Typography>
+                <form autoComplete="off">
+                    <TextField
+                        required
+                        fullWidth
+                        label="Title"
+                        onChange={setPostTitle}
+                    />
+                    <TextField
+                        required
+                        fullWidth
+                        multiline
+                        rows={6}
+                        label="Content"
+                        onChange={setPostContent}
+                    />
+                </form>
+                <Button
+                    className={classes.sendButton}
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    onClick={handlePostButton}
+                >
+                    送信
+                </Button>
+            </Container>
             <Snackbar
                 ref={ref}
                 open={error !== ''}
