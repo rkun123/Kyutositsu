@@ -8,10 +8,12 @@ type Prop = {
 
 const useStyles = makeStyles((theme) => ({
     tile: {
-        width: '300px',
-        height: '300px',
+        margin: 'none'
     },
     card: {
+        margin: '5px',
+        width: '300px',
+        height: '300px'
     },
     title: {
         fontWeight: "bold"
@@ -28,11 +30,9 @@ function PostCard({post}: Prop) {
 
     return (
         <GridListTile
-            cols={1}
-            rows={1}
             className={classes.tile}
         >
-            <Container
+            <Paper
                 key={post.id}
                 className={classes.card}
             >
@@ -53,7 +53,7 @@ function PostCard({post}: Prop) {
                         { post.content }
                     </Typography>
                 </Container>
-            </Container>
+            </Paper>
         </GridListTile>
     )
 

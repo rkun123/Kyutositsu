@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 export type uiState = {
     isDrawerOpen: boolean,
+    drawerWidth: number
 }
 
 const initialState = {
-    isDrawerOpen: false
+    isDrawerOpen: false,
+    drawerWidth: 300
 } as uiState
 
 const uiSlice = createSlice({

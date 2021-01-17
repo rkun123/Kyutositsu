@@ -24,9 +24,7 @@ function Posts() {
     return (
         <React.Fragment>
             <GridList
-                cellHeight="auto"
-                spacing={0}
-                cols={6}
+                spacing={6}
             >
                 {posts}
             </GridList>

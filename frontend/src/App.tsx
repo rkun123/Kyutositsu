@@ -11,10 +11,16 @@ import { CssBaseline, AppBar, makeStyles, Toolbar, Typography, Button, Avatar, I
 import MenuIcon from '@material-ui/icons/Menu'
 import { openDrawer } from './store/ui';
 
+
+type StyleProps = {
+  drawerWidth: number
+}
+
 const useStyle = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    backgroundColor: theme.palette.background.default,
+    //backgroundColor: theme.palette.background.default,
+    backgroundColor: 'grey',
     minHeight: '100vh'
   },
   appBar: {
@@ -28,6 +34,9 @@ const useStyle = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
   },
+  drawerSpace: {
+    paddingLeft: (props: StyleProps) => props.drawerWidth
+  },
   title: {
     flexGrow: 1
   }
@@ -36,8 +45,9 @@ const useStyle = makeStyles((theme) => ({
 function App() {
   const auth = useSelector((state: RootState) => state.auth)
   const userState = useSelector((state: RootState) => state.user)
+  const drawerWidth = useSelector((state: RootState) => state.ui.drawerWidth)
   const isDrawerOpen = useSelector((state: RootState) => state.ui.isDrawerOpen)
-  const classes = useStyle()
+  const classes = useStyle({ drawerWidth })
   const dispatch = useDispatch()
 
   const handleOpenDrawer = () => {
@@ -90,12 +100,14 @@ function App() {
       <Drawer open={isDrawerOpen} />
       <div>
         <div className={classes.drawerHeader}></div>
+        <div className={isDrawerOpen ? classes.drawerSpace : undefined }>
         <Router>
           <Switch>
             <Route path="/callback"><Callback /></Route>
             <Route path="/"><Home /></Route>
           </Switch>
         </Router>
+        </div>
       </div>
     </div>
   );
