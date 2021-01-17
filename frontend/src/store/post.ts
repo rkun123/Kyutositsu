@@ -6,7 +6,6 @@ import { User } from './user'
 
 export type Post = {
     id: number,
-    title: string,
     content: string,
     user_id: number,
     user: User,
@@ -15,7 +14,6 @@ export type Post = {
 }
 
 export type EditingPost = {
-    title: string,
     content: string,
 }
 

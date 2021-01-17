@@ -28,13 +28,6 @@ function PostEdit() {
 
     const ref = createRef()
 
-    const setPostTitle = (e: ChangeEvent<HTMLInputElement>) => {
-        setPost({
-            ...post,
-            title: e.target.value
-        })
-    }
-
     const setPostContent = (e: ChangeEvent<HTMLInputElement>) => {
         setPost({
             ...post,
@@ -43,7 +36,7 @@ function PostEdit() {
     }
 
     const handlePostButton = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-        if(post.title !== '' && post.content !== '') {
+        if(post.content !== '') {
             dispatch(postPost(post))
             setError('')
         } else {
@@ -56,12 +49,6 @@ function PostEdit() {
             <Container className={classes.root}>
                 <Typography variant="h6">New</Typography>
                 <form autoComplete="off">
-                    <TextField
-                        required
-                        fullWidth
-                        label="Title"
-                        onChange={setPostTitle}
-                    />
                     <TextField
                         required
                         fullWidth
