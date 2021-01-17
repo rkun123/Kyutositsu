@@ -7,10 +7,11 @@ import { User } from './user'
 export type Post = {
     id: number,
     content: string,
+    color: string
     user_id: number,
     user: User,
     created_at: Date,
-    update_at: Date
+    update_at: Date,
 }
 
 export type EditingPost = {

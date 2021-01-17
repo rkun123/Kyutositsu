@@ -19,6 +19,14 @@ class Api::V1::PostsController < ApplicationController
     @post = Post.new(post_params)
     @post.user_id = current_api_v1_user.id
 
+    if @post.color == nil
+      color = RGB::Color.from_rgb_hex(0xFFCFCF)
+      color.h = rand * 360
+      @post.color = color.to_rgb_hex
+      puts color
+    end
+
+
     if @post.save
       render json: @post, status: :created, include: :user
     else
@@ -48,6 +56,6 @@ class Api::V1::PostsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def post_params
-      params.require(:post).permit(:title, :content)
+      params.require(:post).permit(:title, :content, :color)
     end
 end

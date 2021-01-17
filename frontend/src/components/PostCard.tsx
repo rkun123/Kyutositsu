@@ -2,8 +2,12 @@ import { Post } from "../store/post";
 import { Paper, CardContent, CardHeader, makeStyles, Typography, Avatar, GridListTile, Container} from '@material-ui/core'
 import { typography } from "@material-ui/system";
 
-type Prop = {
+type Props = {
     post: Post
+}
+
+type StyleProps = {
+    postColor: string
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -11,9 +15,9 @@ const useStyles = makeStyles((theme) => ({
         margin: 'none'
     },
     card: {
-        margin: '5px',
         width: '300px',
-        height: '300px'
+        height: '300px',
+        backgroundColor: (props: StyleProps) => (props.postColor)
     },
     title: {
         fontWeight: "bold"
@@ -25,8 +29,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function PostCard({post}: Prop) {
-    const classes = useStyles()
+function PostCard({post}: Props) {
+    const classes = useStyles({
+        postColor: post.color
+    })
 
     return (
         <GridListTile
@@ -34,6 +40,7 @@ function PostCard({post}: Prop) {
         >
             <Paper
                 key={post.id}
+                square
                 className={classes.card}
             >
                 <CardHeader
