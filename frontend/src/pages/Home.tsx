@@ -9,11 +9,6 @@ import { Grid } from '@material-ui/core'
 
 
 function Home() {
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(fetchPost())
-    }, [dispatch])
 
     return (
         <React.Fragment>
