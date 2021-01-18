@@ -6,12 +6,14 @@ import { RootState } from '../store/index'
 import Posts from '../components/Posts' 
 import PostEdit from '../components/PostEdit'
 import { Grid } from '@material-ui/core'
+import TagSelector from '../components/TagSelector'
 
 
 function Home() {
 
     return (
         <React.Fragment>
+            <TagSelector />
             <Posts />
         </React.Fragment>
     )

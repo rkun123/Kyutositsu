@@ -5,12 +5,14 @@ import authSlice from './auth'
 import userSlice from './user'
 import postSlice from './post'
 import uiSlice from './ui'
+import tagSlice from './tag'
 
 const reducers = combineReducers({
     auth: authSlice.reducer,
     user: userSlice.reducer,
     post: postSlice.reducer,
-    ui: uiSlice.reducer
+    ui: uiSlice.reducer,
+    tag: tagSlice.reducer
 })
 
 const store = createStore(reducers, applyMiddleware(thunk))

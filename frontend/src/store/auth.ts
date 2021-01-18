@@ -2,6 +2,8 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { AppThunk } from './index'
 import { fetchPost } from './post'
 import { fetchUser } from './user'
+import { fetchTags } from './tag'
+
 
 export type Auth = {
     authToken: string,
@@ -32,6 +34,7 @@ export const initAuth = (auth: Auth): AppThunk => async (dispatch, getState) => 
     dispatch(setAuth(auth))
     dispatch(fetchUser())
     dispatch(fetchPost())
+    dispatch(fetchTags())
 }
 
 export default authSlice

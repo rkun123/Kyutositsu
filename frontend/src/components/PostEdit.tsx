@@ -1,10 +1,12 @@
-import { Paper, Grid, FormLabel, TextField, Container, Button, Snackbar, makeStyles, Typography } from "@material-ui/core"
+import { TextField, Container, Button, Snackbar, makeStyles, Typography, FormControl, InputLabel, Select, Chip, MenuItem} from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import { createStyles, withStyles } from "@material-ui/styles"
 import React, { useState, ChangeEvent } from "react"
 import { createRef } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../store"
 import { EditingPost, postPost } from "../store/post"
+import { Tag } from "../store/tag"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,18 +22,32 @@ function PostEdit() {
     const classes = useStyles()
     const dispatch = useDispatch()
 
+    const tags = useSelector((state: RootState) => (state.tag.tags))
+
     const [ error, setError] = useState('')
+    const [ postTagIds, setPostTagIds] = useState([] as number[])
     const [ post, setPost] = useState({
-        title: '',
-        content: ''
+        content: '',
+        tag_ids: []
     } as EditingPost)
 
     const ref = createRef()
+
+    const tagById = (id: number) => tags.find((tag) => (tag.id === id))
 
     const setPostContent = (e: ChangeEvent<HTMLInputElement>) => {
         setPost({
             ...post,
             content: e.target.value
+        })
+    }
+
+    const handleChangeTags = (e: React.ChangeEvent<{value: unknown}>) => {
+        const tag_ids = e.target.value as number[]
+        setPostTagIds(tag_ids)
+        setPost({
+            ...post,
+            tag_ids
         })
     }
 
@@ -49,6 +65,29 @@ function PostEdit() {
             <Container className={classes.root}>
                 <Typography variant="h6">New</Typography>
                 <form autoComplete="off">
+                    <FormControl>
+                        <InputLabel>Tags</InputLabel>
+                        <Select
+                            multiple
+                            value={postTagIds}
+                            onChange={handleChangeTags}
+                            renderValue={(tag_ids) => (
+                                <div>
+                                    {(tag_ids as number[]).map((tag_id) => (
+                                        <Chip key={tag_id} label={tagById(tag_id)!.name} />
+                                    ))}
+                                </div>
+                            )}
+                        >
+                            {
+                                tags.map((tag: Tag) => (
+                                    <MenuItem key={tag.id} value={tag.id}>
+                                        {tag.name}
+                                    </MenuItem>
+                                ))
+                            }
+                        </Select>
+                    </FormControl>
                     <TextField
                         required
                         fullWidth

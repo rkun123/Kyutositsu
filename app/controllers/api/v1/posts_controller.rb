@@ -1,10 +1,13 @@
 class Api::V1::PostsController < ApplicationController
   before_action :authenticate_api_v1_user!
   before_action :set_post, only: [:show, :update, :destroy]
+  before_action :post_index_params, only: [:index]
 
   # GET /posts
   def index
-    @posts = Post.all.order(created_at: "DESC")
+    puts post_index_params
+    @posts = Post.eager_load(:taggings).where(taggings: {tag_id: post_index_params['tag']}).order(created_at: "DESC")
+    puts @posts.count
 
     render json: @posts, include: default_json_includes
   end
@@ -55,6 +58,13 @@ class Api::V1::PostsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
+    end
+
+    def set_posts_filtered_tags
+    end
+
+    def post_index_params
+      params.permit(:tag => [])
     end
 
     # Only allow a trusted parameter "white list" through.

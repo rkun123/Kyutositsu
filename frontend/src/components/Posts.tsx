@@ -5,7 +5,16 @@ import { RootState } from '../store'
 import { fetchPost } from '../store/post'
 import PostCard from './PostCard'
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: 0,
+        width: '100%'
+    }
+}))
+
 function Posts() {
+
+    const classes = useStyles()
 
     const dispatch = useDispatch()
     const postState = useSelector((state: RootState) => {
@@ -15,20 +24,15 @@ function Posts() {
     })
 
     const posts = postState.posts.map(post => {
-        console.info(post)
         return (
             <PostCard post={post} key={post.id}></PostCard>
         )
     })
 
     return (
-        <React.Fragment>
-            <GridList
-                spacing={6}
-            >
-                {posts}
-            </GridList>
-        </React.Fragment>
+        <GridList className={classes.root} style={{margin: 0}}>
+            {posts}
+        </GridList>
     )
 }
 

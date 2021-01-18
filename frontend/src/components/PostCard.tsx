@@ -1,5 +1,5 @@
 import { Post } from "../store/post";
-import { Paper, CardContent, CardHeader, makeStyles, Typography, Avatar, GridListTile, Container} from '@material-ui/core'
+import { Paper, CardHeader, makeStyles, Typography, Avatar, GridListTile, Container, Chip} from '@material-ui/core'
 import { typography } from "@material-ui/system";
 
 type Props = {
@@ -22,11 +22,20 @@ const useStyles = makeStyles((theme) => ({
     title: {
         fontWeight: "bold"
     },
+    chip: {
+        marginRight: theme.spacing(1)
+    },
     content: {
-        width: '100%',
-        whiteSpace: 'pre-wrap',
-        wordWrap: 'break-word'
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between'
+    },
+    tags: {
+        display: 'flex',
+        alignItems: 'center',
+        marginBottom: theme.spacing(1),
     }
+
 }))
 
 function PostCard({post}: Props) {
@@ -55,7 +64,18 @@ function PostCard({post}: Props) {
                     subheader={ post.created_at }
                 >
                 </CardHeader>
-                <Container>
+                <Container className={classes.content}>
+                    <div className={classes.tags}>
+                        {post.tags.map((tag) => (
+                            <Chip
+                                label={tag.name}
+                                className={classes.chip}
+                                size="small"
+                                variant="outlined"
+                                style={{backgroundColor: tag.color}}
+                            ></Chip>
+                        ))}
+                    </div>
                     <Typography component="pre" className={classes.content}>
                         { post.content }
                     </Typography>

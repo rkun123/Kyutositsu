@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk, APIError } from './index'
 import api from '../utils/api'
 import { User } from './user'
+import { Tag } from './tag'
 
 
 export type Post = {
     id: number,
+    tags: Tag[],
     content: string,
     color: string
     user_id: number,
@@ -16,6 +18,7 @@ export type Post = {
 
 export type EditingPost = {
     content: string,
+    tag_ids: number[]
 }
 
 export type PostState = {
@@ -53,8 +56,17 @@ export const { setPost, pushPostToTop, setError } = postSlice.actions
 
 
 export const fetchPost = (): AppThunk => async (dispatch, getState) => {
+    // filtered selectedTags
     const { auth } = getState()
-    const res = await api.get('/posts', {
+
+    const selectedTags = getState().tag.selectedTags
+    let queries = ''
+    if(selectedTags.length > 0) {
+        const ids = selectedTags.map((tag) => (`tag[]=${tag.id}`))
+        queries = '?' + ids.join('&')
+    }
+
+    const res = await api.get('/posts' + queries, {
         headers: {
             'access-token': auth.authToken,
             'token-type': 'Bearer',

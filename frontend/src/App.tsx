@@ -1,4 +1,5 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import clsx from 'clsx'
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { RootState } from './store/index'
@@ -9,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Auth, setAuth, initAuth } from './store/auth'
 import { CssBaseline, AppBar, makeStyles, Toolbar, Typography, Button, Avatar, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu'
-import { openDrawer } from './store/ui';
+import { closeDrawer, openDrawer } from './store/ui';
 
 
 type StyleProps = {
@@ -23,6 +24,9 @@ const useStyle = makeStyles((theme) => ({
     backgroundColor: 'grey',
     minHeight: '100vh'
   },
+  home: {
+    width: '100%'
+  },
   appBar: {
     position: 'fixed',
   },
@@ -34,8 +38,11 @@ const useStyle = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
   },
+  drawerSpaceOn: {
+    marginLeft: (props: StyleProps) => props.drawerWidth
+  },
   drawerSpace: {
-    paddingLeft: (props: StyleProps) => props.drawerWidth
+    transition: 'margin-left 255ms cubic-bezier(0, 0, 0.2, 1) 0ms'
   },
   title: {
     flexGrow: 1
@@ -50,8 +57,9 @@ function App() {
   const classes = useStyle({ drawerWidth })
   const dispatch = useDispatch()
 
-  const handleOpenDrawer = () => {
-    dispatch(openDrawer())
+  const handleDrawerToggle = () => {
+    if(isDrawerOpen) dispatch(closeDrawer())
+    else dispatch(openDrawer())
   }
 
   const getAuthFromLocalstorage = () => {
@@ -80,27 +88,29 @@ function App() {
   }
 
   return (
-    <div className={"App " + classes.root}>
+    <div className={clsx("App", classes.root, classes.drawerSpace, isDrawerOpen ? classes.drawerSpaceOn : undefined)}>
       <CssBaseline />
       <AppBar position="static" color="default" className={classes.appBar}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            onClick={handleOpenDrawer}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" color="inherit" className={classes.title}>
-            C3SNS
-          </Typography>
-          {loginButton()}
-          <Avatar src={userState.user.image}></Avatar>
-        </Toolbar>
+        <div>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              onClick={handleDrawerToggle}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" color="inherit" className={classes.title}>
+              C3SNS
+            </Typography>
+            {loginButton()}
+            <Avatar src={userState.user.image}></Avatar>
+          </Toolbar>
+        </div>
       </AppBar>
       <Drawer open={isDrawerOpen} />
       <div>
         <div className={classes.drawerHeader}></div>
-        <div className={isDrawerOpen ? classes.drawerSpace : undefined }>
+        <div className={classes.home}>
         <Router>
           <Switch>
             <Route path="/callback"><Callback /></Route>
