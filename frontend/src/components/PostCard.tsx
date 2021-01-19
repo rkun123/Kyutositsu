@@ -3,11 +3,13 @@ import { Paper, CardHeader, makeStyles, Typography, Avatar, GridListTile, Contai
 import { typography } from "@material-ui/system";
 
 type Props = {
-    post: Post
+    post: Post,
+    cardWidth: number
 }
 
 type StyleProps = {
-    postColor: string
+    postColor: string,
+    cardWidth: number
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -15,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
         margin: 'none'
     },
     card: {
-        width: '300px',
-        height: '300px',
+        width: (props: StyleProps) => (`${props.cardWidth}px`),
+        height: (props: StyleProps) => (`${props.cardWidth}px`),
         backgroundColor: (props: StyleProps) => (props.postColor)
     },
     title: {
@@ -36,9 +38,10 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-function PostCard({post}: Props) {
+function PostCard({post, cardWidth}: Props) {
     const classes = useStyles({
-        postColor: post.color
+        postColor: post.color,
+        cardWidth
     })
 
     return (

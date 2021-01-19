@@ -108,7 +108,7 @@ function App() {
         </div>
       </AppBar>
       <Drawer open={isDrawerOpen} />
-      <div>
+      <div className={classes.home}>
         <div className={classes.drawerHeader}></div>
         <div className={classes.home}>
         <Router>
