@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       }
       resource :users
       resources :posts
+      resources :tags
     end
   end
 end
