@@ -6,7 +6,7 @@ import { createRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
 import { EditingPost, postPost } from "../store/post"
-import { Tag } from "../store/tag"
+import { Tag, selectTag } from "../store/tag"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -53,8 +53,13 @@ function PostEdit() {
 
     const handlePostButton = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
         if(post.content !== '') {
+            post.tag_ids.forEach((tag_id) => {
+                const tag = tags.find((tag) => (tag.id === tag_id))
+                dispatch(selectTag(tag!))
+            })
             dispatch(postPost(post))
             setError('')
+
         } else {
             setError('Empty field error')
         }
