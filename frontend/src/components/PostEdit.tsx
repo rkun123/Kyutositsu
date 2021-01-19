@@ -12,6 +12,13 @@ const useStyles = makeStyles((theme) => ({
     root: {
         marginTop: `${theme.spacing(5)}px`
     },
+    tags: {
+        display: 'flex',
+        flexWrap: 'wrap'
+    },
+    tag: {
+        marginRight: theme.spacing(0.5)
+    },
     sendButton: {
         margin: `${theme.spacing(2)}px 0`
     }
@@ -77,17 +84,18 @@ function PostEdit() {
                             value={postTagIds}
                             onChange={handleChangeTags}
                             renderValue={(tag_ids) => (
-                                <div>
-                                    {(tag_ids as number[]).map((tag_id) => (
-                                        <Chip key={tag_id} label={tagById(tag_id)!.name} />
-                                    ))}
+                                <div className={classes.tags}>
+                                    {(tag_ids as number[]).map((tag_id) => {
+                                        const tag = tagById(tag_id)!
+                                        return (<Chip key={tag_id} label={tag.name} className={classes.tag} style={{backgroundColor: tag.color}}/>)
+                                    })}
                                 </div>
                             )}
                         >
                             {
                                 tags.map((tag: Tag) => (
                                     <MenuItem key={tag.id} value={tag.id}>
-                                        {tag.name}
+                                        <Chip label={tag.name} style={{backgroundColor: tag.color}}></Chip>
                                     </MenuItem>
                                 ))
                             }

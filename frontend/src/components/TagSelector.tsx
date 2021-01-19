@@ -72,8 +72,8 @@ function TagSelector() {
                     >
                         {
                             tagState.tags.map((tag) => (
-                                <MenuItem key={tag.id} value={tag.id} style={{backgroundColor: tag.color}}>
-                                {tag.name}
+                                <MenuItem key={tag.id} value={tag.id}>
+                                    <Chip label={tag.name}  style={{backgroundColor: tag.color}}></Chip>
                                 </MenuItem>
                             ))
                         }
