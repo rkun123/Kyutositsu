@@ -28,7 +28,7 @@ function TagSelector() {
     const handleUnSelectTag = (tag: any) => {
         console.log('delete', tag)
         dispatch(unSelectTag(tag))
-        dispatch(clearPosts())
+        // Update all posts
         dispatch(fetchPost(false))
     }
 
@@ -37,7 +37,6 @@ function TagSelector() {
         dispatch(selectTag(selectedTag!))
         setIsSelectShow(false)
         // Update all posts
-        dispatch(clearPosts())
         dispatch(fetchPost(false))
     }
 
@@ -68,6 +67,7 @@ function TagSelector() {
                         //value={tagState.selectedTags}
                         open={isSelectShow}
                         onChange={handleSelectTag}
+                        onClose={() => {console.log('close')}}
                         input={<Input id="select-multiple-chip" />}
                     >
                         {

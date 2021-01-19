@@ -95,6 +95,10 @@ export const fetchPost = (addition: boolean): AppThunk => async (dispatch, getSt
     dispatch(setPostFetching(false))
     if(res.status === 200) {
         const posts = res.data as Array<Post>
+
+        // if not addition fetch, clear all posts
+        if(!addition) dispatch(clearPosts())
+
         dispatch(pushPostsToBottom(posts))
 
         dispatch(setPostFetchingSuccessed(true))
@@ -115,7 +119,6 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
     })
     if(res.status === 201) {
         const post = res.data as Post
-        dispatch(clearPosts())
         dispatch(fetchPost(false))
     } else {
         const error = res.data as APIError
