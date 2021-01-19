@@ -64,21 +64,27 @@ const postSlice = createSlice({
 export const { setPostFetching, setPostFetchingSuccessed, pushPostToTop, pushPostsToBottom, clearPosts, setError } = postSlice.actions
 
 
-export const fetchPost = (): AppThunk => async (dispatch, getState) => {
+export const fetchPost = (addition: boolean): AppThunk => async (dispatch, getState) => {
     // filtered selectedTags
     const { auth } = getState()
+
+    const offset = getState().post.posts.length
 
     dispatch(setPostFetching(true))
     dispatch(setPostFetchingSuccessed(false))
 
     const selectedTags = getState().tag.selectedTags
-    let queries = ''
+
+    let queries = [] as string[]
+
     if(selectedTags.length > 0) {
         const ids = selectedTags.map((tag) => (`tag[]=${tag.id}`))
-        queries = '?' + ids.join('&')
+        queries = queries.concat(ids)
     }
 
-    const res = await api.get('/posts' + queries, {
+    if(addition) queries.push(`offset=${offset}`)
+
+    const res = await api.get('/posts?' + queries.join('&'), {
         headers: {
             'access-token': auth.authToken,
             'token-type': 'Bearer',

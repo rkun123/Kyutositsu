@@ -51,5 +51,7 @@ module C3SNS
           expose: ['Per-Page', 'Total', 'Link']
       end
     end
+
+    config.x.preferences = config_for(:preferences)
   end
 end

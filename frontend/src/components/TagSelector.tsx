@@ -3,7 +3,7 @@ import { Chip, makeStyles, MenuItem, Input, Select, Typography } from "@material
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
 import { Tag, unSelectTag, selectTag } from "../store/tag"
-import { fetchPost } from "../store/post"
+import { fetchPost, clearPosts } from "../store/post"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,7 +28,8 @@ function TagSelector() {
     const handleUnSelectTag = (tag: any) => {
         console.log('delete', tag)
         dispatch(unSelectTag(tag))
-        dispatch(fetchPost())
+        dispatch(clearPosts())
+        dispatch(fetchPost(false))
     }
 
     const handleSelectTag = (e: React.ChangeEvent<{value: unknown}>) => {
@@ -36,7 +37,8 @@ function TagSelector() {
         dispatch(selectTag(selectedTag!))
         setIsSelectShow(false)
         // Update all posts
-        dispatch(fetchPost())
+        dispatch(clearPosts())
+        dispatch(fetchPost(false))
     }
 
     return (

@@ -33,7 +33,7 @@ export const { setAuth } = authSlice.actions
 export const initAuth = (auth: Auth): AppThunk => async (dispatch, getState) => {
     dispatch(setAuth(auth))
     dispatch(fetchUser())
-    dispatch(fetchPost())
+    dispatch(fetchPost(false))
     dispatch(fetchTags())
 }
 

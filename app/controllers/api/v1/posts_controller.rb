@@ -5,8 +5,9 @@ class Api::V1::PostsController < ApplicationController
 
   # GET /posts
   def index
-    puts post_index_params
-    @posts = Post.eager_load(:taggings).where(taggings: {tag_id: post_index_params['tag']}).order(created_at: "DESC")
+    limit = post_index_params['limit'] || Rails.application.config.x.preferences['page_size']
+    offset = post_index_params['offset'] || 0
+    @posts = Post.eager_load(:taggings).where(taggings: {tag_id: post_index_params['tag']}).order(created_at: "DESC").limit(limit).offset(offset)
     puts @posts.count
 
     render json: @posts, include: default_json_includes
@@ -64,7 +65,7 @@ class Api::V1::PostsController < ApplicationController
     end
 
     def post_index_params
-      params.permit(:tag => [])
+      params.permit(:limit, :offset, tag: [])
     end
 
     # Only allow a trusted parameter "white list" through.
