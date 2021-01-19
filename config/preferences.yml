@@ -1,0 +1,11 @@
+default: &default
+  page_size: 20
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
