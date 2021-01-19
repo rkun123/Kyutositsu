@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, Action } from '@reduxjs/toolkit'
 import { AppThunk, APIError } from './index'
 import api from '../utils/api'
 import { User } from './user'
@@ -39,11 +39,20 @@ const postSlice = createSlice({
     name: 'post',
     initialState,
     reducers: {
-        setPost(state, action: PayloadAction<PostState>) {
-            return action.payload
+        setPostFetching(state, action: PayloadAction<boolean>) {
+            state.isFetching = action.payload
+        },
+        setPostFetchingSuccessed(state, action: PayloadAction<boolean>) {
+            state.success = action.payload
         },
         pushPostToTop(state, action: PayloadAction<Post>) {
             state.posts.splice(0, 0, action.payload)
+        },
+        pushPostsToBottom(state, action: PayloadAction<Post[]>) {
+            state.posts = state.posts.concat(action.payload)
+        },
+        clearPosts(state, action: Action) {
+            state.posts = []
         },
         setError(state, action: PayloadAction<APIError>) {
             state.error = action.payload
@@ -52,12 +61,15 @@ const postSlice = createSlice({
 })
 
 
-export const { setPost, pushPostToTop, setError } = postSlice.actions
+export const { setPostFetching, setPostFetchingSuccessed, pushPostToTop, pushPostsToBottom, clearPosts, setError } = postSlice.actions
 
 
 export const fetchPost = (): AppThunk => async (dispatch, getState) => {
     // filtered selectedTags
     const { auth } = getState()
+
+    dispatch(setPostFetching(true))
+    dispatch(setPostFetchingSuccessed(false))
 
     const selectedTags = getState().tag.selectedTags
     let queries = ''
@@ -74,14 +86,14 @@ export const fetchPost = (): AppThunk => async (dispatch, getState) => {
             'uid': auth.uid
         }
     })
+    dispatch(setPostFetching(false))
     if(res.status === 200) {
         const posts = res.data as Array<Post>
-        console.info('Success', posts)
-        dispatch(setPost({
-            isFetching: false,
-            success: true,
-            posts
-        } as PostState))
+        dispatch(pushPostsToBottom(posts))
+
+        dispatch(setPostFetchingSuccessed(true))
+    } else {
+        dispatch(setPostFetchingSuccessed(false))
     }
 }
 
