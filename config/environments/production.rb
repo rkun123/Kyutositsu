@@ -80,6 +80,18 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
+  config.middleware.insert_before 0, Rack::Cors do
+    allow do
+      origins 'kyutositsu.rkunkunr.com'
+      resource '*',
+        headers: :any,
+        methods: [:get, :post, :options, :head],
+        expose: ['Per-Page', 'Total', 'Link']
+    end
+  end
+
+  config.session_store :redis_store, servers: ENV["REDIS_URL"], expire_after: 1.day
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 end

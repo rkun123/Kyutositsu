@@ -40,7 +40,6 @@ module C3SNS
     # config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
     config.middleware.use ActionDispatch::Session::RedisStore
     config.middleware.use ActionDispatch::Flash
-    config.session_store :redis_store, servers: 'redis://localhost:6379', expire_after: 1.day
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
