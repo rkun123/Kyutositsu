@@ -7,7 +7,10 @@ class Api::V1::PostsController < ApplicationController
   def index
     limit = post_index_params['limit'] || Rails.application.config.x.preferences['page_size']
     offset = post_index_params['offset'] || 0
-    @posts = Post.eager_load(:taggings).where(taggings: {tag_id: post_index_params['tag']}).order(created_at: "DESC").limit(limit).offset(offset)
+    @posts = Post.left_joins(:taggings).where(taggings: {tag_id: post_index_params['tag']})
+      .or(Post.left_joins(:taggings).where(Tagging.arel_table[:tag_id].eq(nil)))
+      .distinct().order(created_at: "DESC").limit(limit).offset(offset)
+
     puts @posts.count
 
     render json: @posts, include: default_json_includes
