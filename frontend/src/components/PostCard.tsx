@@ -1,6 +1,5 @@
 import { Post } from "../store/post";
 import { Paper, CardHeader, makeStyles, Typography, Avatar, GridListTile, Container, Chip} from '@material-ui/core'
-import { typography } from "@material-ui/system";
 
 type Props = {
     post: Post,

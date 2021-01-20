@@ -1,4 +1,4 @@
-import { makeStyles, Button, GridListTile, Typography } from '@material-ui/core'
+import { makeStyles, Button, GridListTile } from '@material-ui/core'
 import { fetchPost } from '../store/post'
 import { useDispatch } from "react-redux";
 

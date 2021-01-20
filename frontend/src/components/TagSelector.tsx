@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Chip, makeStyles, MenuItem, Input, Select, Typography } from "@material-ui/core"
+import { Chip, makeStyles, MenuItem, Input, Select } from "@material-ui/core"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
-import { Tag, unSelectTag, selectTag } from "../store/tag"
-import { fetchPost, clearPosts } from "../store/post"
+import { unSelectTag, selectTag } from "../store/tag"
+import { fetchPost } from "../store/post"
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Grid, GridList, makeStyles } from '@material-ui/core'
-import { useDispatch, useSelector } from "react-redux"
+import { GridList, makeStyles } from '@material-ui/core'
+import { useSelector } from "react-redux"
 import { RootState } from '../store'
-import { fetchPost } from '../store/post'
 import PostCard from './PostCard'
 import FetchNextPageButton from './FetchNextPageButton'
 
@@ -15,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
 
 function Posts() {
     const classes = useStyles()
-    const dispatch = useDispatch()
 
     const [postCardWidth, setPostCardWidth] = useState(300)
     const gridListRef = useRef(null)
@@ -46,7 +44,7 @@ function Posts() {
         //const observer = new MutationObserver(calcCardWidth)
 
         //observer.observe(gridList, {attributes: true, attributeFilter: ['style']})
-    }, [gridListRef.current])
+    }, [])
 
     return (
         <GridList className={classes.root} style={{margin: 0}} ref={gridListRef}>

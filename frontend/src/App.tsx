@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import clsx from 'clsx'
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
@@ -7,7 +7,7 @@ import Callback from './pages/Callback'
 import Home from './pages/Home'
 import Drawer from './components/Drawer'
 import { useDispatch, useSelector } from 'react-redux';
-import { Auth, setAuth, initAuth } from './store/auth'
+import { Auth, initAuth } from './store/auth'
 import { CssBaseline, AppBar, makeStyles, Toolbar, Typography, Button, Avatar, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu'
 import { closeDrawer, openDrawer } from './store/ui';
@@ -50,7 +50,6 @@ const useStyle = makeStyles((theme) => ({
 }))
 
 function App() {
-  const auth = useSelector((state: RootState) => state.auth)
   const userState = useSelector((state: RootState) => state.user)
   const drawerWidth = useSelector((state: RootState) => state.ui.drawerWidth)
   const isDrawerOpen = useSelector((state: RootState) => state.ui.isDrawerOpen)
@@ -62,7 +61,7 @@ function App() {
     else dispatch(openDrawer())
   }
 
-  const getAuthFromLocalstorage = () => {
+  const getAuthFromLocalstorage = useCallback(() => {
     const localstorageAuthStr = window.localStorage.getItem('sns_auth')
     if(localstorageAuthStr !== null && localstorageAuthStr !== '') {
       const localstorageAuth = JSON.parse(localstorageAuthStr) as Auth
@@ -70,12 +69,12 @@ function App() {
       //dispatch(setAuth(localstorageSNSAuth))
       dispatch(initAuth(localstorageAuth))
     }
-  }
+  }, [dispatch])
 
   useEffect(() => {
     //if(auth.authToken === '') getAuthFromLocalstorage()
     getAuthFromLocalstorage()
-  }, [dispatch])
+  }, [getAuthFromLocalstorage])
 
   const loginButton = () => {
     if(!userState.success) {

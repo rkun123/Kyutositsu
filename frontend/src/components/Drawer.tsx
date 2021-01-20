@@ -1,11 +1,8 @@
-import classes from '*.module.css'
 import { Drawer, List, IconButton, makeStyles, Container } from '@material-ui/core'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store'
-import { openDrawer, closeDrawer } from '../store/ui'
+import { closeDrawer } from '../store/ui'
 import PostEdit from './PostEdit'
 
 type Props = {
