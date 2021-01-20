@@ -55,3 +55,5 @@ gem 'omniauth'
 gem 'omniauth-discord'
 
 gem 'rgb'
+
+gem 'pg'
