@@ -13,6 +13,9 @@ import MenuIcon from '@material-ui/icons/Menu'
 import { closeDrawer, openDrawer } from './store/ui';
 
 
+const frontendURL = process.env.REACT_APP_URL || 'http://localhost:3001'
+const callbackURL = `${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/discord?auth_origin_url=${frontendURL}/callback`
+
 type StyleProps = {
   drawerWidth: number
 }
@@ -79,7 +82,7 @@ function App() {
   const loginButton = () => {
     if(!userState.success) {
       return (
-        <Button color="inherit" href="http://localhost:3000/api/v1/auth/discord?auth_origin_url=http://localhost:3001/callback">
+        <Button color="inherit" href={callbackURL}>
           Login
         </Button>
       )
