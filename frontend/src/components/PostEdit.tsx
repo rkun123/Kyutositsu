@@ -1,4 +1,4 @@
-import { TextField, Container, Button, Snackbar, makeStyles, Typography, FormControl, InputLabel, Select, Chip, MenuItem} from "@material-ui/core"
+import { TextField, Container, Button, Snackbar, makeStyles, Typography, FormControl, InputLabel, Select, Chip, MenuItem, Grid} from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import React, { useState, ChangeEvent } from "react"
 import { createRef } from "react"
@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
 import { EditingPost, postPost } from "../store/post"
 import { Tag, selectTag } from "../store/tag"
+import TagEditor from './TagEditor'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -80,37 +81,40 @@ function PostEdit() {
                 <Typography variant="h6">New</Typography>
                 <form autoComplete="off">
                     <FormControl>
-                        <InputLabel>Tags</InputLabel>
-                        <Select
-                            multiple
-                            value={postTagIds}
-                            onChange={handleChangeTags}
-                            renderValue={(tag_ids) => (
-                                <div className={classes.tags}>
-                                    {(tag_ids as number[]).map((tag_id) => {
-                                        const tag = tagById(tag_id)!
-                                        return (<Chip key={tag_id} label={tag.name} className={classes.tag} style={{backgroundColor: tag.color}}/>)
-                                    })}
-                                </div>
-                            )}
-                        >
-                            {
-                                tags.map((tag: Tag) => (
-                                    <MenuItem key={tag.id} value={tag.id}>
-                                        <Chip label={tag.name} style={{backgroundColor: tag.color}}></Chip>
-                                    </MenuItem>
-                                ))
-                            }
-                        </Select>
+                        <Grid direction="row" alignItems="center">
+                            <InputLabel>Tags</InputLabel>
+                            <Select
+                                multiple
+                                value={postTagIds}
+                                onChange={handleChangeTags}
+                                renderValue={(tag_ids) => (
+                                    <div className={classes.tags}>
+                                        {(tag_ids as number[]).map((tag_id) => {
+                                            const tag = tagById(tag_id)!
+                                            return (<Chip key={tag_id} label={tag.name} className={classes.tag} style={{backgroundColor: tag.color}}/>)
+                                        })}
+                                    </div>
+                                )}
+                            >
+                                {
+                                    tags.map((tag: Tag) => (
+                                        <MenuItem key={tag.id} value={tag.id}>
+                                            <Chip label={tag.name} style={{backgroundColor: tag.color}}></Chip>
+                                        </MenuItem>
+                                    ))
+                                }
+                            </Select>
+                            <TagEditor />
+                        </Grid>
+                        <TextField
+                            required
+                            fullWidth
+                            multiline
+                            rows={6}
+                            label="Content"
+                            onChange={setPostContent}
+                        />
                     </FormControl>
-                    <TextField
-                        required
-                        fullWidth
-                        multiline
-                        rows={6}
-                        label="Content"
-                        onChange={setPostContent}
-                    />
                 </form>
                 <Button
                     className={classes.sendButton}

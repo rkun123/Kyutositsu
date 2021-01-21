@@ -7,3 +7,11 @@ const api = axios.create({
 })
 
 export default api
+
+export const errorToString = (error: any) => {
+    let errorStr = ''
+    for(const [key, value] of Object.entries(error)) {
+        errorStr += `${key}: ${value}`
+    }
+    return errorStr
+}
