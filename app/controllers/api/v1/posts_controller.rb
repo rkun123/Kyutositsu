@@ -11,7 +11,6 @@ class Api::V1::PostsController < ApplicationController
       .or(Post.left_joins(:taggings).where(Tagging.arel_table[:tag_id].eq(nil)))
       .distinct().order(created_at: "DESC").limit(limit).offset(offset)
 
-    puts @posts.count
 
     render json: @posts, include: default_json_includes
   end
@@ -23,19 +22,14 @@ class Api::V1::PostsController < ApplicationController
 
   # POST /posts
   def create
-    tags = Tag.where(id: post_params['tag_ids'])
     @post = Post.new(post_params)
     @post.user_id = current_api_v1_user.id
-    @post.tags = tags
 
     if @post.color == nil
       color = RGB::Color.from_rgb_hex(0xFFCFCF)
       color.h = rand * 360
       @post.color = color.to_rgb_hex
-      puts color
     end
-
-    puts @post.as_json include: :tags
 
     if @post.save
       render json: @post, status: :created, include: default_json_includes

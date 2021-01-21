@@ -58,17 +58,20 @@ function PostEdit() {
     }
 
     const handlePostButton = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-        if(post.content !== '') {
-            post.tag_ids.forEach((tag_id) => {
-                const tag = tags.find((tag) => (tag.id === tag_id))
-                dispatch(selectTag(tag!))
-            })
-            dispatch(postPost(post))
-            setError('')
-
-        } else {
-            setError('Empty field error')
+        if(post.content === '') {
+            setError("Empty content error")
+            return
         }
+        if(post.tag_ids.length === 0) {
+            setError("Empty tags error")
+            return
+        }
+        post.tag_ids.forEach((tag_id) => {
+            const tag = tags.find((tag) => (tag.id === tag_id))
+            dispatch(selectTag(tag!))
+        })
+        dispatch(postPost(post))
+        setError('')
     }
 
     return (
@@ -124,7 +127,7 @@ function PostEdit() {
                 open={error !== ''}
                 autoHideDuration={5000}
             >
-                <Alert variant="filled" severity="error">Error</Alert>
+                <Alert variant="filled" severity="error">{error}</Alert>
             </Snackbar>
         </React.Fragment>
     )
