@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk, APIError } from './index'
-import api from '../utils/api'
+import api, { errorToString } from '../utils/api'
 import { User } from './user'
 
 
 export type Tag = {
     id: number,
-    name: string
-    color: string
+    name: string,
+    color: string,
     created_by: User,
     created_at: Date,
-    update_at: Date,
+    update_at: Date
 }
 
 export type TagState = {
@@ -58,11 +58,12 @@ const tagSlice = createSlice({
 })
 
 
-export const { setTagState, pushTag, selectTag, unSelectTag, setError } = tagSlice.actions
+export const { setFetchState, setTagState, pushTag, selectTag, unSelectTag, setError } = tagSlice.actions
 
 
 export const fetchTags = (): AppThunk => async (dispatch, getState) => {
     const { auth, tag } = getState()
+    dispatch(setFetchState(true))
     const res = await api.get('/tags', {
         headers: {
             'access-token': auth.authToken,
@@ -71,6 +72,7 @@ export const fetchTags = (): AppThunk => async (dispatch, getState) => {
             'uid': auth.uid
         }
     })
+    dispatch(setFetchState(false))
     if(res.status === 200) {
         const tags = res.data as Array<Tag>
         console.info('Success', tags)
@@ -85,19 +87,24 @@ export const fetchTags = (): AppThunk => async (dispatch, getState) => {
 
 export const postTag = (tag: Tag): AppThunk => async (dispatch, getState) => {
     const { auth } = getState()
-    const res = await api.post('/tags', tag, {
-        headers: {
-            'access-token': auth.authToken,
-            'token-type': 'Bearer',
-            'client': auth.client,
-            'uid': auth.uid
+    try {
+        const res = await api.post('/tags', tag, {
+            headers: {
+                'access-token': auth.authToken,
+                'token-type': 'Bearer',
+                'client': auth.client,
+                'uid': auth.uid
+            }
+        })
+        if(res.status === 201) {
+            dispatch(fetchTags())
         }
-    })
-    if(res.status === 201) {
-        const tag = res.data as Tag
-        dispatch(pushTag(tag))
-    } else {
-        const error = res.data as APIError
+
+    } catch(e) {
+        const errorStr = errorToString(e.response.data)
+        const error = {
+            error: errorStr
+        } as APIError
         setError(error)
     }
     
