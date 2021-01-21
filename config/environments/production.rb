@@ -82,7 +82,7 @@ Rails.application.configure do
 
   config.middleware.insert_before 0, Rack::Cors do
     allow do
-      origins 'kyutositsu.rkunkunr.com'
+      origins 'idobata.rkunkunr.com'
       resource '*',
         headers: :any,
         methods: [:get, :post, :options, :head],
