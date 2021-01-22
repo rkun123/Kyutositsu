@@ -2,8 +2,7 @@ import { createSlice, PayloadAction, Action } from '@reduxjs/toolkit'
 import { AppThunk, APIError } from './index'
 import api from '../utils/api'
 import { User } from './user'
-import { Tag } from './tag'
-import { updateChannels } from './subscribes/thunkActions'
+import { selectTagById, Tag } from './tag'
 
 
 export type Post = {
@@ -112,6 +111,11 @@ export const fetchPost = (addition: boolean): AppThunk => async (dispatch, getSt
 
 export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch, getState) => {
     const { auth } = getState()
+
+    editingPost.tag_ids.forEach((tag_id) => {
+        dispatch(selectTagById(tag_id, false))
+    })
+
     const res = await api.post('/posts', editingPost, {
         headers: {
             'access-token': auth.authToken,
@@ -121,7 +125,6 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
         }
     })
     if(res.status === 201) {
-        dispatch(updateChannels())
         dispatch(setError(null))
     } else {
         const error = res.data as APIError
