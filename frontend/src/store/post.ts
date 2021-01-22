@@ -3,6 +3,7 @@ import { AppThunk, APIError } from './index'
 import api from '../utils/api'
 import { User } from './user'
 import { Tag } from './tag'
+import { updateChannels } from './subscribes/thunkActions'
 
 
 export type Post = {
@@ -46,6 +47,8 @@ const postSlice = createSlice({
             state.success = action.payload
         },
         pushPostToTop(state, action: PayloadAction<Post>) {
+            // Check duplicated post before splice
+            if(state.posts.find((post: Post) => (post.id === action.payload.id))) return
             state.posts.splice(0, 0, action.payload)
         },
         pushPostsToBottom(state, action: PayloadAction<Post[]>) {
@@ -118,7 +121,7 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
         }
     })
     if(res.status === 201) {
-        dispatch(fetchPost(false))
+        dispatch(updateChannels())
         dispatch(setError(null))
     } else {
         const error = res.data as APIError
