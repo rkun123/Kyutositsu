@@ -1,4 +1,4 @@
-import { AppThunk, RootState } from '../index'
+import { AppThunk } from '../index'
 import { Tag } from '../tag'
 import createConsumer from '../../utils/actionCableConsumer.js'
 import { addChannel, clearChannels } from './index'
