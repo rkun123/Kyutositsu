@@ -30,6 +30,7 @@ function PostEdit() {
     const dispatch = useDispatch()
 
     const tags = useSelector((state: RootState) => (state.tag.tags))
+    const apiError = useSelector((state: RootState) => (state.post.error))
 
     const [ error, setError] = useState('')
     const [ postTagIds, setPostTagIds] = useState([] as number[])
@@ -72,7 +73,11 @@ function PostEdit() {
             dispatch(selectTag(tag!))
         })
         dispatch(postPost(post))
-        setError('')
+
+        if(apiError === null) setPost({
+            ...post,
+            content: '',
+        })
     }
 
     return (
@@ -112,6 +117,7 @@ function PostEdit() {
                             multiline
                             rows={6}
                             label="Content"
+                            value={post.content}
                             onChange={setPostContent}
                         />
                     </FormControl>

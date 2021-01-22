@@ -54,7 +54,7 @@ const postSlice = createSlice({
         clearPosts(state, action: Action) {
             state.posts = []
         },
-        setError(state, action: PayloadAction<APIError>) {
+        setError(state, action: PayloadAction<APIError | null>) {
             state.error = action.payload
         }
     }
@@ -119,9 +119,10 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
     })
     if(res.status === 201) {
         dispatch(fetchPost(false))
+        dispatch(setError(null))
     } else {
         const error = res.data as APIError
-        setError(error)
+        dispatch(setError(error))
     }
     
 }
