@@ -32,7 +32,7 @@ class Api::V1::PostsController < ApplicationController
     end
 
     if @post.save
-      @post.broadcast_to_clients
+      # @post.broadcast_to_clients
       render json: @post, status: :created, include: default_json_includes
     else
       render json: @post.errors, status: :unprocessable_entity
@@ -50,7 +50,12 @@ class Api::V1::PostsController < ApplicationController
 
   # DELETE /posts/1
   def destroy
-    @post.destroy
+    if @post.user == current_api_v1_user
+      @post.destroy
+      head :ok
+    else
+      head :unauthorized
+    end
   end
 
   private
