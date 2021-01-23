@@ -1,7 +1,7 @@
 import { AppThunk } from '../index'
 import createConsumer from '../../utils/actionCableConsumer.js'
 import { addChannel, deleteChannel, ChannelEntry } from './index'
-import { Post, pushPostToTop} from '../post'
+import { Post, pushPostToTop, deletePostById, updatePost } from '../post'
 
 export const subscribeChannel = (tag_id: number): AppThunk => (dispatch, getState) => {
     const { auth, subscribes } = getState()
@@ -14,8 +14,23 @@ export const subscribeChannel = (tag_id: number): AppThunk => (dispatch, getStat
         tag_id
     }, {
         received(data: any) {
-            const post = JSON.parse(data) as Post
-            dispatch(pushPostToTop(post))
+            switch(data.type) {
+                case 'NEW': {
+                    const post = JSON.parse(data.payload) as Post
+                    dispatch(pushPostToTop(post))
+                    break;
+                }
+                case 'DELETE': {
+                    const id = parseInt(data.payload.id)
+                    dispatch(deletePostById(id))
+                    break;
+                }
+                case 'UPDATE': {
+                    const post = JSON.parse(data.payload) as Post
+                    dispatch(updatePost(post))
+                    break;
+                }
+            }
         },
     })
 
