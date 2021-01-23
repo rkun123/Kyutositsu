@@ -4,9 +4,11 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for 'User', at: 'auth', controllers: {
         omniauth_callbacks: 'api/v1/omniauth_callbacks'
       }
-      resource :users
-      resources :posts
-      resources :tags
+
+      resources :users, :posts, :tags
+
+      resource :user_settings, only: [:show, :update]
+
     end
   end
 end

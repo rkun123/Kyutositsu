@@ -85,7 +85,7 @@ Rails.application.configure do
       origins 'idobata.rkunkunr.com', /https:\/\/.*xenodochial-yonath-04f0fd.netlify.app$/
       resource '*',
         headers: :any,
-        methods: [:get, :post, :options, :head],
+        methods: [:get, :post, :put, :options, :head],
         expose: ['Per-Page', 'Total', 'Link']
     end
   end

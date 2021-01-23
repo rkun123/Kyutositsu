@@ -1,5 +1,9 @@
 default: &default
   page_size: 20
+  default_user_setting:
+    selectedTagIds: []
+    postTagIds: []
+
 
 development:
   <<: *default
