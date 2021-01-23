@@ -6,19 +6,19 @@ class Post < ApplicationRecord
     validate :post_without_tags_is_disallowed
     validates :content, length: { minimum: 1 }
 
-    def broadcast_to_clients
+    after_update do
         tags.each do |tag|
-            PostChannel.broadcast_to(
+            PostChannel.broadcast_to_update(
                 tag,
-                self.to_json(include: { user: {}, tags: {} })
+                self.to_json(include: { user: {}, tags: {}})
             )
         end
     end
 
     private
 
-        def post_without_tags_is_disallowed
-            errors.add(:tags, 'Post without tags is not allowed') if tags.size == 0
-        end
+    def post_without_tags_is_disallowed
+        errors.add(:tags, 'Post without tags is not allowed') if tags.size == 0
+    end
 
 end

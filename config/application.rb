@@ -46,7 +46,7 @@ module C3SNS
         origins 'http://localhost:3001'
         resource '*',
           headers: :any,
-          methods: [:get, :post, :put, :options, :head],
+          methods: [:get, :post, :put, :options, :delete, :head],
           expose: ['Per-Page', 'Total', 'Link']
       end
     end

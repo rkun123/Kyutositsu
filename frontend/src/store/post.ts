@@ -54,6 +54,14 @@ const postSlice = createSlice({
         pushPostsToBottom(state, action: PayloadAction<Post[]>) {
             state.posts = state.posts.concat(action.payload)
         },
+        deletePostById(state, action: PayloadAction<number>) {
+            const idx = state.posts.findIndex((post) => (post.id === action.payload))
+            if(idx > -1) state.posts.splice(idx, 1)
+        },
+        updatePost(state, action: PayloadAction<Post>) {
+            const idx = state.posts.findIndex((post) => (post.id === action.payload.id))
+            if(idx > -1) state.posts.splice(idx, 1, action.payload)
+        },
         clearPosts(state, action: Action) {
             state.posts = []
         },
@@ -64,7 +72,16 @@ const postSlice = createSlice({
 })
 
 
-export const { setPostFetching, setPostFetchingSuccessed, pushPostToTop, pushPostsToBottom, clearPosts, setError } = postSlice.actions
+export const {
+    setPostFetching,
+    setPostFetchingSuccessed,
+    pushPostToTop,
+    pushPostsToBottom,
+    deletePostById,
+    updatePost,
+    clearPosts,
+    setError
+} = postSlice.actions
 
 
 export const fetchPost = (addition: boolean): AppThunk => async (dispatch, getState) => {
@@ -134,7 +151,18 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
         const error = res.data as APIError
         dispatch(setError(error))
     }
-    
+}
+
+export const postDeletePost = (id: number): AppThunk => async (dispatch, getState) => {
+    const { auth } = getState()
+    await api.delete('/posts/' + id, {
+        headers: {
+            'access-token': auth.authToken,
+            'token-type': 'Bearer',
+            'client': auth.client,
+            'uid': auth.uid
+        }
+    })
 }
 
 export default postSlice
