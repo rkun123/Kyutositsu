@@ -7,6 +7,7 @@ import postSlice from './post'
 import uiSlice from './ui'
 import tagSlice from './tag'
 import subscribesSlice from './subscribes'
+import settingsSlice from './settings'
 
 const reducers = combineReducers({
     auth: authSlice.reducer,
@@ -14,7 +15,8 @@ const reducers = combineReducers({
     post: postSlice.reducer,
     ui: uiSlice.reducer,
     tag: tagSlice.reducer,
-    subscribes: subscribesSlice.reducer
+    subscribes: subscribesSlice.reducer,
+    settings: settingsSlice.reducer
 })
 
 const store = createStore(reducers, applyMiddleware(thunk))

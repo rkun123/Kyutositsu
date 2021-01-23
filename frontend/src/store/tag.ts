@@ -4,6 +4,7 @@ import api, { errorToString } from '../utils/api'
 import { User } from './user'
 import { fetchPost } from './post'
 import { subscribeChannel, unSubscribeChannel } from './subscribes/thunkActions'
+import { setSelectedTagIds } from './settings/thunkActions'
 
 
 export type Tag = {
@@ -87,9 +88,15 @@ export const fetchTags = (): AppThunk => async (dispatch, getState) => {
     }
 }
 
+export const updateSelectedTagsSetting = (): AppThunk => (dispatch, getState) => {
+    const { selectedTags } = getState().tag
+    dispatch(setSelectedTagIds(selectedTags.map((tag) => (tag.id))))
+}
+
 export const selectTag = (tag: Tag, refreshPost: boolean = true): AppThunk => (dispatch, getState) => {
     dispatch(_selectTag(tag))
     dispatch(subscribeChannel(tag.id))
+    dispatch(updateSelectedTagsSetting())
     if(refreshPost) dispatch(fetchPost(false))
 }
 
@@ -104,7 +111,18 @@ export const selectTagById = (tag_id: number, refreshPost: boolean = true): AppT
 export const unSelectTag = (tag: Tag, refreshPost: boolean = true): AppThunk => (dispatch, getState) => {
     dispatch(_unSelectTag(tag))
     dispatch(unSubscribeChannel(tag.id))
+    dispatch(updateSelectedTagsSetting())
     if(refreshPost) dispatch(fetchPost(false))
+}
+
+export const setSelectedTagsById = (tag_ids: number[]): AppThunk => (dispatch, getState) => {
+    const { tags } = getState().tag
+    tag_ids.forEach((tag_id) => {
+        const tag = tags.find((tag) => (tag.id === tag_id))
+        if(tag === undefined) return
+        dispatch(_selectTag(tag))
+    })
+    dispatch(fetchPost(false))
 }
 
 export const postTag = (tag: Tag): AppThunk => async (dispatch, getState) => {
