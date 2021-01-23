@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: one
+  setting: {
+    selectedTags: [1, 2]
+  }
+
+two:
+  user_id: two
+  setting: {
+    selectedTags: [1, 2]
+  }

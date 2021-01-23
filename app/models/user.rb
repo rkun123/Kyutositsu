@@ -3,6 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 
   has_many :posts
+  has_one :user_setting
 
   include DeviseTokenAuth::Concerns::User
   devise :rememberable, :omniauthable
@@ -20,5 +21,12 @@ class User < ApplicationRecord
       )
     end
   end
-  
+
+  def create_default_user_setting()
+    puts user_setting
+    puts Rails.configuration.x.preferences
+    default_user_setting = Rails.configuration.x.preferences['default_user_setting']
+    build_user_setting(setting: default_user_setting).save
+  end
+
 end
