@@ -3,7 +3,7 @@ import { Chip, makeStyles, MenuItem, Input, Select } from "@material-ui/core"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
 import { unSelectTag, selectTag } from "../store/tag"
-import { fetchPost } from "../store/post"
+import { Tag } from "../store/tag"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,19 +25,16 @@ function TagSelector() {
 
     const [isSelectShow, setIsSelectShow] = useState(false)
 
-    const handleUnSelectTag = (tag: any) => {
+    const handleUnSelectTag = (tag: Tag) => {
         console.log('delete', tag)
         dispatch(unSelectTag(tag))
         // Update all posts
-        dispatch(fetchPost(false))
     }
 
     const handleSelectTag = (e: React.ChangeEvent<{value: unknown}>) => {
         const selectedTag = tagState.tags.find((tag) => (tag.id === e.target.value as number))
         dispatch(selectTag(selectedTag!))
         setIsSelectShow(false)
-        // Update all posts
-        dispatch(fetchPost(false))
     }
 
     return (

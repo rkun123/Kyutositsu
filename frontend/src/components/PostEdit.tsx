@@ -5,7 +5,7 @@ import { createRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
 import { EditingPost, postPost } from "../store/post"
-import { Tag, selectTag } from "../store/tag"
+import { Tag } from "../store/tag"
 import TagEditor from './TagEditor'
 
 const useStyles = makeStyles((theme) => ({
@@ -68,10 +68,6 @@ function PostEdit() {
             setError("Empty tags error")
             return
         }
-        post.tag_ids.forEach((tag_id) => {
-            const tag = tags.find((tag) => (tag.id === tag_id))
-            dispatch(selectTag(tag!))
-        })
         dispatch(postPost(post))
 
         if(apiError === null) setPost({

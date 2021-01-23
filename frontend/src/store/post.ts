@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, Action } from '@reduxjs/toolkit'
 import { AppThunk, APIError } from './index'
 import api from '../utils/api'
 import { User } from './user'
-import { Tag } from './tag'
+import { selectTagById, Tag } from './tag'
 
 
 export type Post = {
@@ -46,6 +46,8 @@ const postSlice = createSlice({
             state.success = action.payload
         },
         pushPostToTop(state, action: PayloadAction<Post>) {
+            // Check duplicated post before splice
+            if(state.posts.find((post: Post) => (post.id === action.payload.id))) return
             state.posts.splice(0, 0, action.payload)
         },
         pushPostsToBottom(state, action: PayloadAction<Post[]>) {
@@ -109,6 +111,11 @@ export const fetchPost = (addition: boolean): AppThunk => async (dispatch, getSt
 
 export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch, getState) => {
     const { auth } = getState()
+
+    editingPost.tag_ids.forEach((tag_id) => {
+        dispatch(selectTagById(tag_id, false))
+    })
+
     const res = await api.post('/posts', editingPost, {
         headers: {
             'access-token': auth.authToken,
@@ -118,8 +125,9 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
         }
     })
     if(res.status === 201) {
-        dispatch(fetchPost(false))
+        const post = res.data as Post
         dispatch(setError(null))
+        dispatch(pushPostToTop(post))
     } else {
         const error = res.data as APIError
         dispatch(setError(error))

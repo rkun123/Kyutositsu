@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk, APIError } from './index'
 import api, { errorToString } from '../utils/api'
 import { User } from './user'
+import { fetchPost } from './post'
+import { subscribeChannel, unSubscribeChannel } from './subscribes/thunkActions'
 
 
 export type Tag = {
@@ -42,12 +44,12 @@ const tagSlice = createSlice({
         pushTag(state, action: PayloadAction<Tag>) {
             state.tags.push(action.payload)
         },
-        selectTag(state, action: PayloadAction<Tag>) {
+        _selectTag(state, action: PayloadAction<Tag>) {
             if(!state.selectedTags.find(tag => (tag.id === action.payload.id))) {
                 state.selectedTags.push(action.payload)
             }
         },
-        unSelectTag(state, action: PayloadAction<Tag>) {
+        _unSelectTag(state, action: PayloadAction<Tag>) {
             const index = state.selectedTags.findIndex((tag: Tag) => (tag.id === action.payload.id))
             if(index > -1) state.selectedTags.splice(index, 1)
         },
@@ -58,7 +60,7 @@ const tagSlice = createSlice({
 })
 
 
-export const { setFetchState, setTagState, pushTag, selectTag, unSelectTag, setError } = tagSlice.actions
+export const { setFetchState, setTagState, pushTag, _selectTag, _unSelectTag, setError } = tagSlice.actions
 
 
 export const fetchTags = (): AppThunk => async (dispatch, getState) => {
@@ -83,6 +85,26 @@ export const fetchTags = (): AppThunk => async (dispatch, getState) => {
             tags
         } as TagState))
     }
+}
+
+export const selectTag = (tag: Tag, refreshPost: boolean = true): AppThunk => (dispatch, getState) => {
+    dispatch(_selectTag(tag))
+    dispatch(subscribeChannel(tag.id))
+    if(refreshPost) dispatch(fetchPost(false))
+}
+
+export const selectTagById = (tag_id: number, refreshPost: boolean = true): AppThunk => (dispatch, getState) => {
+    const { tags } = getState().tag
+    const tag = tags.find((tag) => (tag.id === tag_id))
+
+    if(tag === undefined) return
+    dispatch(selectTag(tag, refreshPost))
+}
+
+export const unSelectTag = (tag: Tag, refreshPost: boolean = true): AppThunk => (dispatch, getState) => {
+    dispatch(_unSelectTag(tag))
+    dispatch(unSubscribeChannel(tag.id))
+    if(refreshPost) dispatch(fetchPost(false))
 }
 
 export const postTag = (tag: Tag): AppThunk => async (dispatch, getState) => {

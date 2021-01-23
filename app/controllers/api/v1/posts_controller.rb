@@ -32,6 +32,7 @@ class Api::V1::PostsController < ApplicationController
     end
 
     if @post.save
+      @post.broadcast_to_clients
       render json: @post, status: :created, include: default_json_includes
     else
       render json: @post.errors, status: :unprocessable_entity

@@ -6,6 +6,15 @@ class Post < ApplicationRecord
     validate :post_without_tags_is_disallowed
     validates :content, length: { minimum: 1 }
 
+    def broadcast_to_clients
+        tags.each do |tag|
+            PostChannel.broadcast_to(
+                tag,
+                self.to_json(include: { user: {}, tags: {} })
+            )
+        end
+    end
+
     private
 
         def post_without_tags_is_disallowed
