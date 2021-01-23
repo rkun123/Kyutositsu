@@ -3,6 +3,7 @@ import { AppThunk, APIError } from './index'
 import api from '../utils/api'
 import { User } from './user'
 import { selectTagById, Tag } from './tag'
+import { setPostTagIds } from './settings/thunkActions'
 
 
 export type Post = {
@@ -128,6 +129,7 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
         const post = res.data as Post
         dispatch(setError(null))
         dispatch(pushPostToTop(post))
+        dispatch(setPostTagIds(editingPost.tag_ids))
     } else {
         const error = res.data as APIError
         dispatch(setError(error))

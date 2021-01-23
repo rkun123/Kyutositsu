@@ -34,7 +34,7 @@ export const setPostTagIds = (selectedTagIds: number[]): AppThunk => async (disp
 
 export const postSetting = (): AppThunk => async (dispatch, getState) => {
     const { auth, settings } = getState()
-    const res = await api.put('/user_settings', { setting: settings }, {
+    await api.put('/user_settings', { setting: settings }, {
         headers: {
             'access-token': auth.authToken,
             'token-type': 'Bearer',

@@ -1,7 +1,7 @@
 import { TextField, Container, Button, Snackbar, makeStyles, Typography, FormControl, InputLabel, Select, Chip, MenuItem, Grid} from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import React, { useState, ChangeEvent } from "react"
-import { createRef } from "react"
+import { createRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
 import { EditingPost, postPost } from "../store/post"
@@ -31,6 +31,7 @@ function PostEdit() {
 
     const tags = useSelector((state: RootState) => (state.tag.tags))
     const apiError = useSelector((state: RootState) => (state.post.error))
+    const tag_ids = useSelector((state: RootState) => (state.settings.postTagIds))
 
     const [ error, setError] = useState('')
     const [ postTagIds, setPostTagIds] = useState([] as number[])
@@ -75,6 +76,10 @@ function PostEdit() {
             content: '',
         })
     }
+
+    useEffect(() => {
+        setPostTagIds(tag_ids)
+    }, [tag_ids])
 
     return (
         <React.Fragment>
