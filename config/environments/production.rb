@@ -35,7 +35,7 @@ Rails.application.configure do
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://example.com/cable'
-  config.action_cable.allowed_request_origins = [ 'https://idobata.rkunkunr.com' ]
+  config.action_cable.allowed_request_origins = [ 'https://idobata.rkunkunr.com', /https:\/\/.*xenodochial-yonath-04f0fd.netlify.app$/]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
@@ -82,7 +82,7 @@ Rails.application.configure do
 
   config.middleware.insert_before 0, Rack::Cors do
     allow do
-      origins 'idobata.rkunkunr.com'
+      origins 'idobata.rkunkunr.com', /https:\/\/.*xenodochial-yonath-04f0fd.netlify.app$/
       resource '*',
         headers: :any,
         methods: [:get, :post, :options, :head],
