@@ -121,6 +121,7 @@ export const setSelectedTagsById = (tag_ids: number[]): AppThunk => (dispatch, g
         const tag = tags.find((tag) => (tag.id === tag_id))
         if(tag === undefined) return
         dispatch(_selectTag(tag))
+        dispatch(subscribeChannel(tag.id))
     })
     dispatch(fetchPost(false))
 }

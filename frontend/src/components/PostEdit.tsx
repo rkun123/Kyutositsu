@@ -34,51 +34,42 @@ function PostEdit() {
     const tag_ids = useSelector((state: RootState) => (state.settings.postTagIds))
 
     const [ error, setError] = useState('')
-    const [ postTagIds, setPostTagIds] = useState([] as number[])
-    const [ post, setPost] = useState({
-        content: '',
-        tag_ids: []
-    } as EditingPost)
+    const [content, setContent] = useState('')
+    const [tagIds, setTagIds] = useState([] as number[])
 
     const ref = createRef()
 
     const tagById = (id: number) => tags.find((tag) => (tag.id === id))
 
     const setPostContent = (e: ChangeEvent<HTMLInputElement>) => {
-        setPost({
-            ...post,
-            content: e.target.value
-        })
+        setContent(e.target.value)
     }
 
     const handleChangeTags = (e: React.ChangeEvent<{value: unknown}>) => {
         const tag_ids = e.target.value as number[]
-        setPostTagIds(tag_ids)
-        setPost({
-            ...post,
-            tag_ids
-        })
+        setTagIds(tag_ids)
     }
 
     const handlePostButton = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-        if(post.content === '') {
+        if(content === '') {
             setError("Empty content error")
             return
         }
-        if(post.tag_ids.length === 0) {
+        if(tagIds.length === 0) {
             setError("Empty tags error")
             return
         }
+        const post = {
+            content,
+            tag_ids: tagIds
+        } as EditingPost
         dispatch(postPost(post))
 
-        if(apiError === null) setPost({
-            ...post,
-            content: '',
-        })
+        if(apiError === null) setContent('')
     }
 
     useEffect(() => {
-        setPostTagIds(tag_ids)
+        setTagIds(tag_ids)
     }, [tag_ids])
 
     return (
@@ -91,7 +82,7 @@ function PostEdit() {
                             <InputLabel>Tags</InputLabel>
                             <Select
                                 multiple
-                                value={postTagIds}
+                                value={tagIds}
                                 onChange={handleChangeTags}
                                 renderValue={(tag_ids) => (
                                     <div className={classes.tags}>
@@ -118,7 +109,7 @@ function PostEdit() {
                             multiline
                             rows={6}
                             label="Content"
-                            value={post.content}
+                            value={content}
                             onChange={setPostContent}
                         />
                     </FormControl>
