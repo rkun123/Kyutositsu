@@ -125,7 +125,9 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
         }
     })
     if(res.status === 201) {
+        const post = res.data as Post
         dispatch(setError(null))
+        dispatch(pushPostToTop(post))
     } else {
         const error = res.data as APIError
         dispatch(setError(error))
