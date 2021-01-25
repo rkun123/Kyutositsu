@@ -10,15 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_23_083526) do
-
-  create_table "user_settings", force: :cascade do |t|
-    t.integer "user_id"
-    t.json "setting"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_user_settings_on_user_id"
-  end
+ActiveRecord::Schema.define(version: 2021_01_25_121414) do
 
   create_table "posts", force: :cascade do |t|
     t.text "content"
@@ -26,6 +18,7 @@ ActiveRecord::Schema.define(version: 2021_01_23_083526) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "color"
+    t.integer "column_size", default: 1, null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
