@@ -1,4 +1,4 @@
-import { TextField, Container, Button, Snackbar, makeStyles, Typography, FormControl, InputLabel, Select, Chip, MenuItem, Grid} from "@material-ui/core"
+import { TextField, Container, Button, Snackbar, makeStyles, Typography, FormControl, InputLabel, Select, Chip, MenuItem, Grid, LinearProgress, Box, FormHelperText } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import React, { useState, ChangeEvent } from "react"
 import { createRef, useEffect } from "react"
@@ -7,6 +7,8 @@ import { RootState } from "../store"
 import { EditingPost, postPost } from "../store/post"
 import { Tag } from "../store/tag"
 import TagEditor from './TagEditor'
+
+const postMaxLetters = 200
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,6 +36,7 @@ function PostEdit() {
     const tag_ids = useSelector((state: RootState) => (state.settings.postTagIds))
 
     const [ error, setError] = useState('')
+    const [ contentLengthError, setContentLengthError] = useState<boolean>(true)
     const [content, setContent] = useState('')
     const [tagIds, setTagIds] = useState([] as number[])
 
@@ -59,6 +62,7 @@ function PostEdit() {
             setError("Empty tags error")
             return
         }
+        setError('')
         const post = {
             content,
             tag_ids: tagIds
@@ -71,6 +75,11 @@ function PostEdit() {
     useEffect(() => {
         setTagIds(tag_ids)
     }, [tag_ids])
+
+    useEffect(() => {
+        if(content.length > postMaxLetters) setContentLengthError(true)
+        else setContentLengthError(false)
+    }, [content])
 
     return (
         <React.Fragment>
@@ -114,15 +123,35 @@ function PostEdit() {
                         />
                     </FormControl>
                 </form>
-                <Button
-                    className={classes.sendButton}
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    onClick={handlePostButton}
-                >
-                    送信
-                </Button>
+                <Box display="flex" alignItems="center" mt={2}>
+                    <Box width="100%" mr={1}>
+                        <LinearProgress variant="determinate" value={content.length / postMaxLetters * 100} />
+                    </Box>
+                    <Box>
+                        <Typography variant="body2">{content.length}</Typography>
+                    </Box>
+                </Box>
+                <Box display="flex" alignItems="center">
+                    <Box>
+                        <Button
+                            className={classes.sendButton}
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            onClick={handlePostButton}
+                            disabled={contentLengthError ? true : false}
+                        >
+                            送信
+                        </Button>
+                    </Box>
+                    <Box ml={2}>
+                        {
+                            contentLengthError ? 
+                            <FormHelperText><span style={{color: 'red'}}>{ content.length }</span> / {postMaxLetters}</FormHelperText>
+                            :undefined
+                        }
+                    </Box>
+                </Box>
             </Container>
             <Snackbar
                 ref={ref}

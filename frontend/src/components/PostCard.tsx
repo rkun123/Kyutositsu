@@ -4,12 +4,13 @@ import PostContextMenu from './PostContextMenu'
 
 type Props = {
     post: Post,
-    cardWidth: number
+    columnWidth: number
 }
 
 type StyleProps = {
     postColor: string,
-    cardWidth: number
+    cardWidth: number,
+    cardHeight: number
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         width: (props: StyleProps) => (`${props.cardWidth}px`),
-        height: (props: StyleProps) => (`${props.cardWidth}px`),
+        height: (props: StyleProps) => (`${props.cardHeight}px`),
         backgroundColor: (props: StyleProps) => (props.postColor)
     },
     title: {
@@ -44,10 +45,11 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-function PostCard({post, cardWidth}: Props) {
+function PostCard({post, columnWidth}: Props) {
     const classes = useStyles({
         postColor: post.color,
-        cardWidth
+        cardWidth: columnWidth * post.column_size,
+        cardHeight: columnWidth
     })
 
     return (
