@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
 function Posts() {
     const classes = useStyles()
 
-    const [postCardWidth, setPostCardWidth] = useState(300)
+    const [columnWidth, setColumnWidth] = useState(300)
+    const [columns, setColumns] = useState(1)
     const gridListRef = useRef(null)
 
     const postState = useSelector((state: RootState) => {
@@ -24,7 +25,7 @@ function Posts() {
 
     const posts = postState.posts.map(post => {
         return (
-            <PostCard post={post} cardWidth={postCardWidth} key={post.id}></PostCard>
+            <PostCard post={post} columnWidth={columnWidth} isSingleColumn={columns === 1 ? true : false} key={post.id}></PostCard>
         )
     })
 
@@ -32,15 +33,16 @@ function Posts() {
         if(!gridListRef.current) return
         const gridList = gridListRef.current! as HTMLUListElement
         console.info(gridList)
-        const calcCardWidth = () => {
+        const calcColumnWidth = () => {
             const width = gridList.offsetWidth
             const numberOfColumns = Math.floor(width / 300)
+            setColumns(numberOfColumns)
             const w = 300 + width % 300 / numberOfColumns
-            console.log('width', width)
-            setPostCardWidth(w)
+            setColumnWidth(w)
         }
 
-        window.addEventListener('resize', calcCardWidth)
+        window.addEventListener('resize', calcColumnWidth)
+        calcColumnWidth()
         //const observer = new MutationObserver(calcCardWidth)
 
         //observer.observe(gridList, {attributes: true, attributeFilter: ['style']})

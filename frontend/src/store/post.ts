@@ -10,6 +10,8 @@ export type Post = {
     id: number,
     tags: Tag[],
     content: string,
+    raw_content: string,
+    column_size: number,
     color: string
     user_id: number,
     user: User,
