@@ -4,13 +4,15 @@ import PostContextMenu from './PostContextMenu'
 
 type Props = {
     post: Post,
-    columnWidth: number
+    columnWidth: number,
+    isSingleColumn: boolean
 }
 
 type StyleProps = {
     postColor: string,
     cardWidth: number,
-    cardHeight: number
+    cardHeight: number,
+    isSingleColumn: boolean
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -18,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
         margin: 'none'
     },
     card: {
-        width: (props: StyleProps) => (`${props.cardWidth}px`),
-        height: (props: StyleProps) => (`${props.cardHeight}px`),
+        width: (props: StyleProps) => (props.isSingleColumn ? `${props.cardHeight}px` : `${props.cardWidth}px`),
+        minHeight: (props: StyleProps) => (`${props.cardHeight}px`),
         backgroundColor: (props: StyleProps) => (props.postColor)
     },
     title: {
@@ -35,21 +37,23 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(1)
     },
     content: {
-        whiteSpace: 'pre-wrap'
+        overflowWrap: 'anywhere'
     },
     tags: {
         display: 'flex',
         alignItems: 'center',
         marginBottom: theme.spacing(1),
+        flexWrap: 'wrap'
     }
 
 }))
 
-function PostCard({post, columnWidth}: Props) {
+function PostCard({post, columnWidth, isSingleColumn}: Props) {
     const classes = useStyles({
         postColor: post.color,
         cardWidth: columnWidth * post.column_size,
-        cardHeight: columnWidth
+        cardHeight: columnWidth,
+        isSingleColumn
     })
 
     return (
@@ -88,9 +92,7 @@ function PostCard({post, columnWidth}: Props) {
                             ></Chip>
                         ))}
                     </div>
-                    <Typography component="pre" className={classes.content}>
-                        { post.content }
-                    </Typography>
+                    <Typography component="div" className={classes.content} dangerouslySetInnerHTML={{__html: post.raw_content}} />
                 </Container>
             </Paper>
         </GridListTile>

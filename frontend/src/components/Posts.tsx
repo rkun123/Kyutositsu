@@ -16,6 +16,7 @@ function Posts() {
     const classes = useStyles()
 
     const [columnWidth, setColumnWidth] = useState(300)
+    const [columns, setColumns] = useState(1)
     const gridListRef = useRef(null)
 
     const postState = useSelector((state: RootState) => {
@@ -24,7 +25,7 @@ function Posts() {
 
     const posts = postState.posts.map(post => {
         return (
-            <PostCard post={post} columnWidth={columnWidth} key={post.id}></PostCard>
+            <PostCard post={post} columnWidth={columnWidth} isSingleColumn={columns === 1 ? true : false} key={post.id}></PostCard>
         )
     })
 
@@ -35,8 +36,8 @@ function Posts() {
         const calcColumnWidth = () => {
             const width = gridList.offsetWidth
             const numberOfColumns = Math.floor(width / 300)
+            setColumns(numberOfColumns)
             const w = 300 + width % 300 / numberOfColumns
-            console.log('width', width)
             setColumnWidth(w)
         }
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_25_121414) do
+ActiveRecord::Schema.define(version: 2021_01_25_145622) do
 
   create_table "posts", force: :cascade do |t|
     t.text "content"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2021_01_25_121414) do
     t.datetime "updated_at", null: false
     t.string "color"
     t.integer "column_size", default: 1, null: false
+    t.string "raw_content"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
