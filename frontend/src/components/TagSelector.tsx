@@ -36,6 +36,9 @@ function TagSelector() {
         dispatch(selectTag(selectedTag!))
         setIsSelectShow(false)
     }
+    const handleCloseSelect = () => {
+        setIsSelectShow(false)
+    }
 
     return (
         <div className={classes.root}>
@@ -64,7 +67,7 @@ function TagSelector() {
                         //value={tagState.selectedTags}
                         open={isSelectShow}
                         onChange={handleSelectTag}
-                        onClose={() => {console.log('close')}}
+                        onClose={handleCloseSelect}
                         input={<Input id="select-multiple-chip" />}
                     >
                         {
