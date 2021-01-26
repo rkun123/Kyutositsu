@@ -48,12 +48,17 @@ function PostEdit() {
         setContent(e.target.value)
     }
 
+    const handlePostHotKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if(e.ctrlKey && e.key === 'Enter')
+        handlePostButton()
+    }
+
     const handleChangeTags = (e: React.ChangeEvent<{value: unknown}>) => {
         const tag_ids = e.target.value as number[]
         setTagIds(tag_ids)
     }
 
-    const handlePostButton = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    const handlePostButton = (): void => {
         if(content === '') {
             setError("Empty content error")
             return
@@ -120,6 +125,7 @@ function PostEdit() {
                             label="Content"
                             value={content}
                             onChange={setPostContent}
+                            onKeyDown={handlePostHotKey}
                         />
                     </FormControl>
                 </form>
@@ -138,7 +144,7 @@ function PostEdit() {
                             variant="contained"
                             color="primary"
                             size="large"
-                            onClick={handlePostButton}
+                            onClick={() => {handlePostButton()}}
                             disabled={contentLengthError ? true : false}
                         >
                             送信
