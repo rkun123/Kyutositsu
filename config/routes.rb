@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       resources :users, :posts, :tags
 
       resource :user_settings, only: [:show, :update]
+
+      post '/favorites', to: 'favorites#create'
     end
   end
   get '/auth/:provider/callback', to: 'sessions#create'

@@ -4,6 +4,8 @@ class User < ApplicationRecord
 
   has_many :posts
   has_many :tokens
+  has_many :favorites
+  has_many :favorite_posts, source: :post, through: :favorites, dependent: :destroy
   has_one :user_setting
 
   # include DeviseTokenAuth::Concerns::User
