@@ -1,7 +1,25 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :authenticate_api_v1_user!
+
+  def index
+    render json: @current_user
+  end
+
   def show
-    @user = current_api_v1_user
-    render json: @user
+    user = User.where(user_params)
+    puts user.count
+    if user.count > 0
+      render json: user
+    else
+      render json: user, status: :not_found
+    end
+  end
+
+
+  private
+
+  # Only allow a trusted parameter "white list" through.
+  def user_params
+    # params.permit(:content, :color, taggings_attributes: [:id, :tag])
+    params.permit(:id)
   end
 end

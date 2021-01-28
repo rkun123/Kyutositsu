@@ -1,5 +1,6 @@
 class Api::V1::PostsController < ApplicationController
-  before_action :authenticate_api_v1_user!
+  before_action :current_user
+  before_action :authenticate_user!
   before_action :set_post, only: [:show, :update, :destroy]
   before_action :post_index_params, only: [:index]
 
@@ -81,7 +82,7 @@ class Api::V1::PostsController < ApplicationController
     def default_json_includes
       {
         user: {},
-        tags: {}
+        tags: {},
       }
     end
 end

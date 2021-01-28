@@ -15,6 +15,7 @@ export type Post = {
     color: string
     user_id: number,
     user: User,
+    favorite_users: User[],
     created_at: Date,
     update_at: Date,
 }
