@@ -107,14 +107,7 @@ export const fetchPost = (addition: boolean): AppThunk => async (dispatch, getSt
 
     if(addition) queries.push(`offset=${offset}`)
 
-    const res = await api.get('/posts?' + queries.join('&'), {
-        headers: {
-            'access-token': auth.authToken,
-            'token-type': 'Bearer',
-            'client': auth.client,
-            'uid': auth.uid
-        }
-    })
+    const res = await api.get('/posts?' + queries.join('&'), {})
     dispatch(setPostFetching(false))
     if(res.status === 200) {
         const posts = res.data as Array<Post>
@@ -137,14 +130,7 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
         dispatch(selectTagById(tag_id, false))
     })
 
-    const res = await api.post('/posts', editingPost, {
-        headers: {
-            'access-token': auth.authToken,
-            'token-type': 'Bearer',
-            'client': auth.client,
-            'uid': auth.uid
-        }
-    })
+    const res = await api.post('/posts', editingPost, {})
     if(res.status === 201) {
         const post = res.data as Post
         dispatch(setError(null))
@@ -158,14 +144,7 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
 
 export const postDeletePost = (id: number): AppThunk => async (dispatch, getState) => {
     const { auth } = getState()
-    await api.delete('/posts/' + id, {
-        headers: {
-            'access-token': auth.authToken,
-            'token-type': 'Bearer',
-            'client': auth.client,
-            'uid': auth.uid
-        }
-    })
+    await api.delete('/posts/' + id)
 }
 
 export default postSlice

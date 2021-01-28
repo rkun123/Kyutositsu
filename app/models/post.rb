@@ -24,8 +24,8 @@ class Post < ApplicationRecord
     private
 
     def define_column_size
-        puts Rails.configuration.x.preferences['post']['smallPostMaxLetters']
-        if content.length > Rails.configuration.x.preferences['post']['smallPostMaxLetters']
+        puts Rails.configuration.x.preferences.post[:smallPostMaxLetters]
+        if content.length > Rails.configuration.x.preferences.post[:smallPostMaxLetters]
             self.column_size = 2
         else
             self.column_size = 1

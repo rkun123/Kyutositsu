@@ -7,8 +7,8 @@ module AuthenticationHelper
         @current_user ||= User.find(session[:user_id])
       elsif cookies[:_idobata_token]
         # Use cookie token
-        puts "cookie", cookies[:_idobata_token]
-        token_uuid = cookies[:_idobata_token]
+        puts "cookie", cookies.signed[:_idobata_token]
+        token_uuid = cookies.signed[:_idobata_token]
         @current_user = Token.user_by_token(token_uuid)
         set_user_session(@current_user)
       end

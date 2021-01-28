@@ -1,4 +1,4 @@
-class Api::V1::UserSettingsController < ApplicationController
+class Api::V1::UserSettingsController < Api::V1::ApplicationController
   before_action :authenticate_user!
   before_action :set_user_setting, only: [:show, :update]
 

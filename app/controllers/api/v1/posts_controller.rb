@@ -1,4 +1,4 @@
-class Api::V1::PostsController < ApplicationController
+class Api::V1::PostsController < Api::V1::ApplicationController
   before_action :current_user
   before_action :authenticate_user!
   before_action :set_post, only: [:show, :update, :destroy]
@@ -24,7 +24,7 @@ class Api::V1::PostsController < ApplicationController
   # POST /posts
   def create
     @post = Post.new(post_params)
-    @post.user_id = current_api_v1_user.id
+    @post.user_id = current_user.id
 
     if @post.color == nil
       color = RGB::Color.from_rgb_hex(0xFFCFCF)
