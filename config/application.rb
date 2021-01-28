@@ -41,16 +41,6 @@ module C3SNS
     # config.middleware.use ActionDispatch::Session::RedisStore
     config.middleware.use ActionDispatch::Flash
 
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins 'http://localhost:3001'
-        resource '*',
-          headers: :any,
-          methods: [:get, :post, :put, :options, :delete, :head],
-          expose: ['Per-Page', 'Total', 'Link']
-      end
-    end
-
     config.x.preferences = config_for(:preferences)
   end
 end

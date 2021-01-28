@@ -3,6 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 
   has_many :posts
+  has_many :tokens
   has_one :user_setting
 
   # include DeviseTokenAuth::Concerns::User

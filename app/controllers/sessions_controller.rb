@@ -2,10 +2,11 @@ class SessionsController < ApplicationController
     skip_before_action :authenticate_user!
 
     def create
-        puts auth_hash
         @user = User.find_for_oauth(auth_hash)
-        puts @user
-        session[:user_id] = @user.id
+
+        set_user_cookie(@user)
+        set_user_session(@user)
+
         redirect_to '/'
     end
 
@@ -18,7 +19,6 @@ class SessionsController < ApplicationController
     private
     
     def auth_hash
-        puts request.env
         request.env['omniauth.auth']
     end
 
