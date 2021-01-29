@@ -1,5 +1,18 @@
-class Api::V1::OmniauthCallbacksController < DeviseTokenAuth::OmniauthCallbacksController
+class Api::V1::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   include Devise::Controllers::Rememberable
+  # skip_before_fileter! :authenticate_api_v1_user!
+
+  def discord
+    puts 'LOGIN!!!'
+    @user = User.find_for_oauth(request.env['omniauth.auth'])
+    puts @user
+
+    if @user.persisted?
+      sign_in_and_redirect @user, event: :authentication
+    else
+      redirect_to new_user_registration_url
+    end
+  end
 
   def assign_provider_attrs(user, auth_hash)
     all_attrs = auth_hash["info"].slice(*user.attributes.keys)

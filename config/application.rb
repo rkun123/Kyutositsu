@@ -37,19 +37,9 @@ module C3SNS
     # config.session_store :cookie_store, key: '_interslice_session'
     config.middleware.use Rack::MethodOverride
     config.middleware.use ActionDispatch::Cookies # Required for all session management
-    # config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
-    config.middleware.use ActionDispatch::Session::RedisStore
+    config.middleware.use ActionDispatch::Session::CookieStore
+    # config.middleware.use ActionDispatch::Session::RedisStore
     config.middleware.use ActionDispatch::Flash
-
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins 'http://localhost:3001'
-        resource '*',
-          headers: :any,
-          methods: [:get, :post, :put, :options, :delete, :head],
-          expose: ['Per-Page', 'Total', 'Link']
-      end
-    end
 
     config.x.preferences = config_for(:preferences)
   end

@@ -47,14 +47,7 @@ export const { setUser } = userSlice.actions
 
 export const fetchUser = (): AppThunk => async (dispatch, getState) => {
     const { auth } = getState()
-    const res = await api.get('/auth/validate_token', {
-        headers: {
-            'access-token': auth.authToken,
-            'token-type': 'Bearer',
-            'client': auth.client,
-            'uid': auth.uid
-        }
-    })
+    const res = await api.get('/users', {})
     if(res.data.success === true) {
         const user = res.data.data as User
         console.info('Success', user)

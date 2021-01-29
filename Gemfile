@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.4', '>= 5.2.4.3'
+gem 'rails', '~> 6.1'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -49,8 +49,8 @@ gem 'dotenv-rails'
 gem 'redis-rack', '~> 2.1.3'
 gem 'redis-rails'
 
-gem 'devise'
-gem 'devise_token_auth'
+gem 'devise', github: 'heartcombo/devise', branch: 'ca-omniauth-2'
+#gem 'devise_token_auth'
 gem 'omniauth'
 gem 'omniauth-discord'
 

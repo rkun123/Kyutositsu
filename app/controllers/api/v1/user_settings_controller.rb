@@ -1,10 +1,9 @@
-class Api::V1::UserSettingsController < ApplicationController
-  before_action :authenticate_api_v1_user!
+class Api::V1::UserSettingsController < Api::V1::ApplicationController
+  before_action :authenticate_user!
   before_action :set_user_setting, only: [:show, :update]
 
   # GET /user_settings/1
   def show
-    current_api_v1_user.user_setting
     render json: @user_setting
   end
 
@@ -20,8 +19,8 @@ class Api::V1::UserSettingsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user_setting
-      current_api_v1_user.create_default_user_setting unless current_api_v1_user.user_setting
-      @user_setting = current_api_v1_user.user_setting
+      @current_user.create_default_user_setting unless @current_user.user_setting
+      @user_setting = @current_user.user_setting
     end
 
     # Only allow a trusted parameter "white list" through.

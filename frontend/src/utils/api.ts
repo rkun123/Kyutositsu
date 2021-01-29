@@ -4,6 +4,7 @@ export const backendURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost
 
 const api = axios.create({
     baseURL: `${backendURL}/api/v1`,
+    withCredentials: true
 })
 
 export default api

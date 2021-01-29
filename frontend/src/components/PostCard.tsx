@@ -1,5 +1,6 @@
 import { Post } from '../store/post';
-import { Paper, CardHeader, makeStyles, Typography, Avatar, GridListTile, Container, Chip } from '@material-ui/core'
+import { Paper, CardHeader, makeStyles, Typography, Avatar, GridListTile, Container, Chip, Box } from '@material-ui/core'
+import Favorite from '@material-ui/icons/Favorite'
 import PostContextMenu from './PostContextMenu'
 
 type Props = {
@@ -20,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
         margin: 'none'
     },
     card: {
+        display: 'flex',
+        flexDirection: 'column',
         width: (props: StyleProps) => (props.isSingleColumn ? `${props.cardHeight}px` : `${props.cardWidth}px`),
         minHeight: (props: StyleProps) => (`${props.cardHeight}px`),
         backgroundColor: (props: StyleProps) => (props.postColor)
@@ -37,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(1)
     },
     content: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
         overflowWrap: 'anywhere'
     },
     tags: {
@@ -92,7 +98,16 @@ function PostCard({post, columnWidth, isSingleColumn}: Props) {
                             ></Chip>
                         ))}
                     </div>
-                    <Typography component="div" className={classes.content} dangerouslySetInnerHTML={{__html: post.raw_content}} />
+                    <Box flexDirection="column" flexGrow="1" justifyContent="space-between">
+                        <Box>
+                            <Typography component="div" className={classes.content} dangerouslySetInnerHTML={{__html: post.raw_content}} />
+                        </Box>
+                        <Box>
+                            <Box>
+                                <Favorite></Favorite>
+                            </Box>
+                        </Box>
+                    </Box>
                 </Container>
             </Paper>
         </GridListTile>

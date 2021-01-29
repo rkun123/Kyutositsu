@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
-  include DeviseTokenAuth::Concerns::SetUserByToken
-  protect_from_forgery
+  include AuthenticationHelper
+
+  before_action :authenticate_user!
+  before_action :current_user
 end

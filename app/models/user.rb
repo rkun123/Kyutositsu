@@ -3,12 +3,14 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 
   has_many :posts
+  has_many :tokens
   has_one :user_setting
 
-  include DeviseTokenAuth::Concerns::User
+  # include DeviseTokenAuth::Concerns::User
   devise :rememberable, :omniauthable
 
   def self.find_for_oauth(auth) 
+    puts auth
     Rails.logger.warn '----------------------'
     return User.where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user = User.create(

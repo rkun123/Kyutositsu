@@ -7,7 +7,7 @@ class Post < ApplicationRecord
     has_many :tags, through: :taggings
 
     validate :post_without_tags_is_disallowed
-    validates :content, length: { minimum: 1, maximum: Rails.configuration.x.preferences['post']['postMaxLetters'] }
+    validates :content, length: { minimum: 1, maximum: Rails.configuration.x.preferences.post[:postMaxLetters] }
 
     before_save :content_processing
     before_save :define_column_size
@@ -24,8 +24,8 @@ class Post < ApplicationRecord
     private
 
     def define_column_size
-        puts Rails.configuration.x.preferences['post']['smallPostMaxLetters']
-        if content.length > Rails.configuration.x.preferences['post']['smallPostMaxLetters']
+        puts Rails.configuration.x.preferences.post[:smallPostMaxLetters]
+        if content.length > Rails.configuration.x.preferences.post[:smallPostMaxLetters]
             self.column_size = 2
         else
             self.column_size = 1
