@@ -89,8 +89,6 @@ export const {
 
 export const fetchPost = (addition: boolean): AppThunk => async (dispatch, getState) => {
     // filtered selectedTags
-    const { auth } = getState()
-
     const offset = getState().post.posts.length
 
     dispatch(setPostFetching(true))
@@ -124,8 +122,6 @@ export const fetchPost = (addition: boolean): AppThunk => async (dispatch, getSt
 }
 
 export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch, getState) => {
-    const { auth } = getState()
-
     editingPost.tag_ids.forEach((tag_id) => {
         dispatch(selectTagById(tag_id, false))
     })
@@ -143,7 +139,6 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
 }
 
 export const postDeletePost = (id: number): AppThunk => async (dispatch, getState) => {
-    const { auth } = getState()
     await api.delete('/posts/' + id)
 }
 
