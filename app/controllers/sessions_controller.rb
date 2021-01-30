@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
         set_user_cookie(@user)
         set_user_session(@user)
 
-        redirect_to '/'
+        redirect_to frontend_url
     end
 
     def destroy
@@ -27,4 +27,9 @@ class SessionsController < ApplicationController
         redirect_url = '/' unless redirect_url
         redirect_url
     end
+
+    def frontend_url
+        "#{ENV['FRONTEND_CORS_ORIGIN']}"
+    end
+
 end
