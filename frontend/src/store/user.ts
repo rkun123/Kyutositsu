@@ -46,9 +46,10 @@ export const { setUser } = userSlice.actions
 
 
 export const fetchUser = (): AppThunk => async (dispatch, getState) => {
+    console.log("Fetch")
     const res = await api.get('/users', {})
-    if(res.data.success === true) {
-        const user = res.data.data as User
+    if(res.status === 200) {
+        const user = res.data as User
         console.info('Success', user)
         dispatch(setUser({
             isFetching: false,

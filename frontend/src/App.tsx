@@ -11,10 +11,8 @@ import { Auth, initAuth } from './store/auth'
 import { CssBaseline, AppBar, makeStyles, Toolbar, Typography, Button, Avatar, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu'
 import { closeDrawer, openDrawer } from './store/ui';
+import callbackURL from './utils/callbackURL'
 
-
-const frontendURL = process.env.REACT_APP_URL || 'http://localhost:3001'
-const callbackURL = `${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/discord?auth_origin_url=${frontendURL}/callback`
 
 type StyleProps = {
   drawerWidth: number
@@ -70,9 +68,16 @@ function App() {
       const localstorageAuth = JSON.parse(localstorageAuthStr) as Auth
       console.log('localstorageSNSAuth', localstorageAuth)
       //dispatch(setAuth(localstorageSNSAuth))
-      dispatch(initAuth(localstorageAuth))
+      dispatch(initAuth())
     }
   }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initAuth())
+  }, [dispatch])
+  useEffect(() => {
+    console.log(userState.user.image)
+  }, [userState])
 
   useEffect(() => {
     //if(auth.authToken === '') getAuthFromLocalstorage()

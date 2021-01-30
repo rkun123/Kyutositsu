@@ -1,0 +1,2 @@
+const callbackURL = `https://discord.com/api/oauth2/authorize?client_id=${process.env.REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_BACKEND_URL}/auth/discord/callback&response_type=code&scope=identify email`
+export default callbackURL
