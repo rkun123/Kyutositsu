@@ -29,3 +29,4 @@
 /.env
 /dump.rdb
 /public
+/node_modules
