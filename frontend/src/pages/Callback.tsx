@@ -15,7 +15,7 @@ function Callback() {
             client: param.get('client_id')!,
             uid: param.get('uid')!
         } as Auth
-        dispatch(initAuth(auth))
+        dispatch(initAuth())
         window.localStorage.setItem('sns_auth', JSON.stringify(auth))
         history.push('/')
         

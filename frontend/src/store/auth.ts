@@ -30,7 +30,7 @@ const authSlice = createSlice({
 
 export const { setAuth } = authSlice.actions
 
-export const initAuth = (auth: Auth): AppThunk => async (dispatch, getState) => {
+export const initAuth = (): AppThunk => async (dispatch, getState) => {
     //await dispatch(setAuth(auth))
     await dispatch(fetchUser())
     await dispatch(fetchTags())

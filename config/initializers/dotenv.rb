@@ -1,0 +1,5 @@
+Dotenv.require_keys(
+    'DISCORD_CLIENT_ID',
+    'DISCORD_CLIENT_SECRET',
+    'FRONTEND_CORS_ORIGIN'
+)

@@ -1,14 +1,13 @@
 import { AppThunk } from '../index'
-import createConsumer from '../../utils/actionCableConsumer.js'
+import consumer from '../../utils/actionCableConsumer.js'
 import { addChannel, deleteChannel, ChannelEntry } from './index'
 import { Post, pushPostToTop, deletePostById, updatePost } from '../post'
 
 export const subscribeChannel = (tag_id: number): AppThunk => (dispatch, getState) => {
-    const { auth, subscribes } = getState()
+    const { subscribes } = getState()
     // Avoid create duplicated channel.
     if(subscribes.channels.find((channelEntry) => (channelEntry.tag_id === tag_id)) !== undefined) return
 
-    const consumer = createConsumer(auth.uid, auth.client, auth.authToken)
     const channel = consumer.subscriptions.create({
         channel: 'PostChannel',
         tag_id
