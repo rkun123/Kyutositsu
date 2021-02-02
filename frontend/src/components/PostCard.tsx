@@ -1,7 +1,11 @@
-import { Post } from '../store/post';
-import { Paper, CardHeader, makeStyles, Typography, Avatar, GridListTile, Container, Chip, Box } from '@material-ui/core'
+import { RootState } from '../store';
+import { Post, postFavorite, postUnFavorite } from '../store/post';
+import { Paper, CardHeader, makeStyles, Typography, Avatar, GridListTile, Container, Chip, Box, IconButton } from '@material-ui/core'
 import Favorite from '@material-ui/icons/Favorite'
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
 import PostContextMenu from './PostContextMenu'
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 type Props = {
     post: Post,
@@ -43,15 +47,17 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 1,
-        overflowWrap: 'anywhere'
+        overflowWrap: 'anywhere',
+        marginBottom: theme.spacing(1)
     },
     tags: {
         display: 'flex',
         alignItems: 'center',
         marginBottom: theme.spacing(1),
         flexWrap: 'wrap'
+    },
+    cardBottomToolBox: {
     }
-
 }))
 
 function PostCard({post, columnWidth, isSingleColumn}: Props) {
@@ -61,6 +67,35 @@ function PostCard({post, columnWidth, isSingleColumn}: Props) {
         cardHeight: columnWidth,
         isSingleColumn
     })
+    const dispatch = useDispatch()
+
+    const [favoritedByMe, setFavoritedByMe] = useState(false)
+
+    const user = useSelector((state: RootState) => state.user.user)
+
+    useEffect(() => {
+        setFavoritedByMe(
+            post.favorite_users.find(favorite_user => favorite_user.id === user.id) !== undefined
+        )
+    }, [setFavoritedByMe, post, user])
+
+    const handleFavorite = () => {
+        if(!favoritedByMe) dispatch(postFavorite(post))
+        else dispatch(postUnFavorite(post))
+    }
+
+    const cardBottomToolBox = () => (
+        <Box display="flex" flexDirection="row" alignItems="center" className={classes.cardBottomToolBox}>
+            <IconButton onClick={handleFavorite}>
+            { favoritedByMe
+                ? <Favorite />
+                : <FavoriteBorder /> }
+            </IconButton>
+            <Typography>
+                { post.favorite_users.length }
+            </Typography>
+        </Box>
+    )
 
     return (
         <GridListTile
@@ -75,7 +110,7 @@ function PostCard({post, columnWidth, isSingleColumn}: Props) {
                     avatar={
                         <Avatar
                             src={ post.user.image }
-                        >{ post.user.name[0] }</Avatar>
+                        >{ post.user.name }</Avatar>
                     }
                     title={
                         <div className={classes.titleContainer}>
@@ -98,15 +133,11 @@ function PostCard({post, columnWidth, isSingleColumn}: Props) {
                             ></Chip>
                         ))}
                     </div>
-                    <Box flexDirection="column" flexGrow="1" justifyContent="space-between">
+                    <Box display="flex" flexDirection="column" flexGrow="1" justifyContent="space-between">
                         <Box>
                             <Typography component="div" className={classes.content} dangerouslySetInnerHTML={{__html: post.raw_content}} />
                         </Box>
-                        <Box>
-                            <Box>
-                                <Favorite></Favorite>
-                            </Box>
-                        </Box>
+                        <Box> { cardBottomToolBox() } </Box>
                     </Box>
                 </Container>
             </Paper>

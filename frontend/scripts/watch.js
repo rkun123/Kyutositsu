@@ -42,7 +42,7 @@ conf.plugins = conf
 // We needed to output to a specific folder for cross-framework interop.
 // Make sure to change the output path or to remove this line if the behavior
 // of the original gist is sufficient for your needs!
-conf.output.path = path.join(process.cwd(), '../public');
+conf.output.path = path.resolve(__dirname, '../../public');
 
 webpack(conf).watch({}, (err, stats) => {
   if (err) {
@@ -57,6 +57,7 @@ webpack(conf).watch({}, (err, stats) => {
 });
 
 function copyPublicFolder() {
+  console.log("Copy:", paths.appPublic, "=>", paths.appBuild)
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
     filter: file => file !== paths.appHtml

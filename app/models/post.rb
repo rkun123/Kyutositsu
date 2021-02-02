@@ -5,6 +5,8 @@ class Post < ApplicationRecord
     belongs_to :user
     has_many :taggings, dependent: :destroy
     has_many :tags, through: :taggings
+    has_many :favorites
+    has_many :favorite_users, source: :user, through: :favorites, dependent: :destroy
 
     validate :post_without_tags_is_disallowed
     validates :content, length: { minimum: 1, maximum: Rails.configuration.x.preferences.post[:postMaxLetters] }
@@ -16,7 +18,7 @@ class Post < ApplicationRecord
         tags.each do |tag|
             PostChannel.broadcast_to_update(
                 tag,
-                self.to_json(include: { user: {}, tags: {}})
+                self.to_json(include: { user: {}, tags: {}, favorite_users: {}})
             )
         end
     end

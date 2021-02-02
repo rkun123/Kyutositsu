@@ -4,6 +4,8 @@ class User < ApplicationRecord
 
   has_many :posts
   has_many :tokens
+  has_many :favorites
+  has_many :favorite_posts, source: :post, through: :favorites, dependent: :destroy
   has_one :user_setting
 
   # include DeviseTokenAuth::Concerns::User
@@ -18,7 +20,7 @@ class User < ApplicationRecord
         provider: auth.provider,
         uid:      auth.uid,
         email:    auth.info.email,
-        token:    auth.credentials.token,
+        # token:    auth.credentials.token,
         password: Devise.friendly_token[0,20]
       )
     end

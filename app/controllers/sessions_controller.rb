@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
         set_user_cookie(@user)
         set_user_session(@user)
 
-        redirect_to frontend_url
+        redirect_to '/'
     end
 
     def destroy
