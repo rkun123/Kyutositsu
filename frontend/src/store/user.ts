@@ -8,6 +8,7 @@ export type User = {
     provider: 'discord',
     uid: string,
     name: string,
+    nickname: string,
     image: string,
     email: string
 }

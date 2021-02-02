@@ -24,7 +24,7 @@ class Api::V1::PostsController < Api::V1::ApplicationController
   # POST /posts
   def create
     @post = Post.new(post_params)
-    @post.user_id = current_user.id
+    @post.user_id = @current_user.id
 
     if @post.color == nil
       color = RGB::Color.from_rgb_hex(0xFFCFCF)
@@ -51,7 +51,7 @@ class Api::V1::PostsController < Api::V1::ApplicationController
 
   # DELETE /posts/1
   def destroy
-    if @post.user == current_api_v1_user
+    if @post.user == @current_user
       @post.destroy
       head :ok
     else

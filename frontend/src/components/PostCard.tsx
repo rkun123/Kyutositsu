@@ -110,11 +110,11 @@ function PostCard({post, columnWidth, isSingleColumn}: Props) {
                     avatar={
                         <Avatar
                             src={ post.user.image }
-                        >{ post.user.name }</Avatar>
+                        >{ post.user.nickname }</Avatar>
                     }
                     title={
                         <div className={classes.titleContainer}>
-                            <Typography variant="h6">{ post.user.name }</Typography>
+                            <Typography variant="h6">{ post.user.nickname }</Typography>
                             <PostContextMenu post={post}></PostContextMenu>
                         </div>
                     }

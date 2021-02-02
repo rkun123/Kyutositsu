@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_28_101928) do
+ActiveRecord::Schema.define(version: 2021_02_02_062311) do
 
   create_table "favorites", force: :cascade do |t|
     t.integer "user_id"
@@ -89,6 +89,9 @@ ActiveRecord::Schema.define(version: 2021_01_28_101928) do
     t.text "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "token"
+    t.string "refresh_token"
+    t.integer "expires_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -97,5 +100,10 @@ ActiveRecord::Schema.define(version: 2021_01_28_101928) do
 
   add_foreign_key "favorites", "posts"
   add_foreign_key "favorites", "users"
+  add_foreign_key "posts", "users"
+  add_foreign_key "taggings", "posts"
+  add_foreign_key "taggings", "tags"
+  add_foreign_key "tags", "users", column: "created_by_id"
   add_foreign_key "tokens", "users"
+  add_foreign_key "user_settings", "users"
 end

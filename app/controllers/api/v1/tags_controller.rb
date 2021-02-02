@@ -1,4 +1,4 @@
-class Api::V1::TagsController < ApplicationController
+class Api::V1::TagsController < Api::V1::ApplicationController
   before_action :authenticate_user!
   before_action :set_tag, only: [:show, :update, :destroy]
 
@@ -17,7 +17,7 @@ class Api::V1::TagsController < ApplicationController
   # POST /tags
   def create
     @tag = Tag.new(tag_params)
-    @tag.created_by = current_api_v1_user
+    @tag.created_by = @current_user
 
     if @tag.color == nil
       color = RGB::Color.from_rgb_hex(0xFFCFCF)
