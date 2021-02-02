@@ -18,7 +18,7 @@ class Post < ApplicationRecord
         tags.each do |tag|
             PostChannel.broadcast_to_update(
                 tag,
-                self.to_json(include: { user: {}, tags: {}})
+                self.to_json(include: { user: {}, tags: {}, favorite_users: {}})
             )
         end
     end

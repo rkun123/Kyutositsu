@@ -5,7 +5,7 @@ class Tagging < ApplicationRecord
     after_create do
         PostChannel.broadcast_to_new(
             tag,
-            post.to_json(include: { user: {}, tags: {} })
+            post.to_json(include: { user: {}, tags: {}, favorite_users: {} })
         )
     end
 

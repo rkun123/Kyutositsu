@@ -65,6 +65,17 @@ const postSlice = createSlice({
             const idx = state.posts.findIndex((post) => (post.id === action.payload.id))
             if(idx > -1) state.posts.splice(idx, 1, action.payload)
         },
+        favoritePost(state, action: PayloadAction<{user: User, post: Post}>) {
+            const idx = state.posts.findIndex((post) => (post.id === action.payload.post.id))
+            if(idx === -1) return
+            state.posts[idx].favorite_users.push(action.payload.user)
+        },
+        unFavoritePost(state, action: PayloadAction<{user: User, post: Post}>) {
+            const postIdx = state.posts.findIndex((post) => (post.id === action.payload.post.id))
+            if(postIdx === -1) return
+            const favoriteIdx = state.posts[postIdx].favorite_users.findIndex((user) => user.id === action.payload.user.id)
+            if(favoriteIdx > -1) state.posts[postIdx].favorite_users.splice(favoriteIdx, 1)
+        },
         clearPosts(state, action: Action) {
             state.posts = []
         },
@@ -82,6 +93,8 @@ export const {
     pushPostsToBottom,
     deletePostById,
     updatePost,
+    favoritePost,
+    unFavoritePost,
     clearPosts,
     setError
 } = postSlice.actions
@@ -140,6 +153,22 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
 
 export const postDeletePost = (id: number): AppThunk => async (dispatch, getState) => {
     await api.delete('/posts/' + id)
+}
+
+export const postFavorite = (post: Post): AppThunk => async (dispatch, getState) => {
+    const user = getState().user.user
+    const res = await api.post(`/posts/${post.id}/favorite`)
+    if(res.status === 200) {
+        dispatch(favoritePost({ user, post }))
+    }
+}
+
+export const postUnFavorite = (post: Post): AppThunk => async (dispatch, getState) => {
+    const user = getState().user.user
+    const res = await api.delete(`/posts/${post.id}/favorite`)
+    if(res.status === 200) {
+        dispatch(unFavoritePost({ user, post }))
+    }
 }
 
 export default postSlice
