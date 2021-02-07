@@ -12,6 +12,7 @@ import { CssBaseline, AppBar, makeStyles, Toolbar, Typography, Button, Avatar, I
 import MenuIcon from '@material-ui/icons/Menu'
 import { closeDrawer, openDrawer } from './store/ui';
 import callbackURL from './utils/callbackURL'
+import NotificationsTimeline from './components/notifications/NotificationTimeline'
 
 
 type StyleProps = {
@@ -47,6 +48,11 @@ const useStyle = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1
+  },
+  bottomTimeline: {
+    position: 'fixed',
+    width: '100%',
+    bottom: 0
   }
 }))
 
@@ -124,6 +130,9 @@ function App() {
             <Route path="/"><Home /></Route>
           </Switch>
         </Router>
+        <div className={classes.bottomTimeline}>
+          <NotificationsTimeline />
+        </div>
         </div>
       </div>
     </div>
