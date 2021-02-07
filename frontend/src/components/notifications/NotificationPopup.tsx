@@ -40,7 +40,7 @@ export default function Notification( { notification, anchor, open, close }: Pro
                 <Paper onClick={() => {console.info('CLOSE'); close()}} className={classes.popOverPaper}>
                     <Box display="flex" flexDirection="column" justifyContent="center">
                         <Chip label={`${favorite.post.user.nickname}がいいねしました。`} className={classes.chip}/>
-                        <PostCard post={favorite.post} isNotification isSingleColumn></PostCard>
+                        <PostCard columnWidth={300} post={favorite.post} isNotification={true} isSingleColumn></PostCard>
                     </Box>
 
                 </Paper>

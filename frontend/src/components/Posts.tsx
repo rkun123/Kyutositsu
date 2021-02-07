@@ -25,7 +25,7 @@ function Posts() {
 
     const posts = postState.posts.map(post => {
         return (
-            <PostCard post={post} columnWidth={columnWidth} isSingleColumn={columns === 1 ? true : false} key={post.id}></PostCard>
+            <PostCard post={post} isNotification={false} columnWidth={columnWidth} isSingleColumn={columns === 1 ? true : false} key={post.id}></PostCard>
         )
     })
 

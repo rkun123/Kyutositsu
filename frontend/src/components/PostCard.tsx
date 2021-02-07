@@ -6,13 +6,12 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
 import PostContextMenu from './PostContextMenu'
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types'
 
 type Props = {
     post: Post,
     columnWidth: number,
     isSingleColumn: boolean,
-    isNotification: PropTypes.OptionalKeys<boolean>
+    isNotification: boolean
 }
 
 type StyleProps = {
