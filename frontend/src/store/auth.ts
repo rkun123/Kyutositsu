@@ -3,6 +3,7 @@ import { AppThunk } from './index'
 import { fetchUser } from './user'
 import { fetchTags } from './tag'
 import { fetchSetting } from './settings/thunkActions'
+import { fetchNotifications, subscribeNotifications } from './notifications/thunkActions'
 
 
 export type Auth = {
@@ -35,6 +36,8 @@ export const initAuth = (): AppThunk => async (dispatch, getState) => {
     await dispatch(fetchUser())
     await dispatch(fetchTags())
     await dispatch(fetchSetting())
+    await dispatch(fetchNotifications())
+    dispatch(subscribeNotifications())
 }
 
 export default authSlice

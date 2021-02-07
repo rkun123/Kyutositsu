@@ -8,6 +8,7 @@ import uiSlice from './ui'
 import tagSlice from './tag'
 import subscribesSlice from './subscribes'
 import settingsSlice from './settings'
+import notificationsSlice from './notifications/index'
 
 const reducers = combineReducers({
     auth: authSlice.reducer,
@@ -16,7 +17,8 @@ const reducers = combineReducers({
     ui: uiSlice.reducer,
     tag: tagSlice.reducer,
     subscribes: subscribesSlice.reducer,
-    settings: settingsSlice.reducer
+    settings: settingsSlice.reducer,
+    notifications: notificationsSlice.reducer
 })
 
 const store = createStore(reducers, applyMiddleware(thunk))

@@ -11,6 +11,8 @@ Rails.application.routes.draw do
         resource :favorite, only: [:create, :destroy]
       end
 
+      resources :notifications, only: [:index]
+
       resource :user_settings, only: [:show, :update]
 
       post '/favorites', to: 'favorites#create'

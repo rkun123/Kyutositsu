@@ -5,12 +5,14 @@ import Favorite from '@material-ui/icons/Favorite'
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
 import PostContextMenu from './PostContextMenu'
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types'
 
 type Props = {
     post: Post,
     columnWidth: number,
-    isSingleColumn: boolean
+    isSingleColumn: boolean,
+    isNotification: PropTypes.OptionalKeys<boolean>
 }
 
 type StyleProps = {
@@ -60,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function PostCard({post, columnWidth, isSingleColumn}: Props) {
+function PostCard({post, columnWidth, isSingleColumn, isNotification = false}: Props) {
     const classes = useStyles({
         postColor: post.color,
         cardWidth: columnWidth * post.column_size,
@@ -115,7 +117,7 @@ function PostCard({post, columnWidth, isSingleColumn}: Props) {
                     title={
                         <div className={classes.titleContainer}>
                             <Typography variant="h6">{ post.user.nickname }</Typography>
-                            <PostContextMenu post={post}></PostContextMenu>
+                            { isNotification ? null : <PostContextMenu post={post}></PostContextMenu> }
                         </div>
                     }
                     subheader={ post.created_at }
@@ -137,7 +139,7 @@ function PostCard({post, columnWidth, isSingleColumn}: Props) {
                         <Box>
                             <Typography component="div" className={classes.content} dangerouslySetInnerHTML={{__html: post.raw_content}} />
                         </Box>
-                        <Box> { cardBottomToolBox() } </Box>
+                        { isNotification ? null : <Box> { cardBottomToolBox() } </Box> }
                     </Box>
                 </Container>
             </Paper>
