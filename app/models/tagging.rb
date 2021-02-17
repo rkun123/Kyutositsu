@@ -3,9 +3,10 @@ class Tagging < ApplicationRecord
     belongs_to :tag
 
     after_create do
+        serializer = PostSerializer.new(self.post)
         PostChannel.broadcast_to_new(
             tag,
-            post.to_json(include: { user: {}, tags: {}, favorite_users: {} })
+            serializer.to_json(include: { user: {}, tags: {}, assets: {}, favorite_users: {} })
         )
     end
 

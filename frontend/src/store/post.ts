@@ -18,23 +18,53 @@ export type Post = {
     favorite_users: User[],
     created_at: Date,
     update_at: Date,
+    assets: Asset[]
+}
+
+export type AssetUpload = {
+    isUploading: boolean,
+    asset: Asset
+}
+
+export type Asset = {
+    id: number,
+    file_type: string,
+    file: {
+        url: string,
+        thumbnail: {
+            url: string
+        }
+    },
 }
 
 export type EditingPost = {
     content: string,
-    tag_ids: number[]
+    tag_ids: number[],
+    assetUploading: boolean,
+    assets: Asset[]
 }
+
+const initialEditingPost = {
+    content: '',
+    tag_ids: [],
+    assetUploading: false,
+    assets: []
+} as EditingPost
 
 export type PostState = {
     posts: Array<Post>,
+    edit: EditingPost,
     isFetching: boolean,
+    assetUploading: boolean,
     success: boolean,
     error: APIError | null
 }
 
 const initialState = {
     posts: [],
+    edit: initialEditingPost,
     isFetching: false,
+    assetUploading: false,
     success: false,
     error: null
 } as PostState
@@ -76,6 +106,27 @@ const postSlice = createSlice({
             const favoriteIdx = state.posts[postIdx].favorite_users.findIndex((user) => user.id === action.payload.user.id)
             if(favoriteIdx > -1) state.posts[postIdx].favorite_users.splice(favoriteIdx, 1)
         },
+        initEditingPost(state, action: Action) {
+            state.edit = initialEditingPost
+        },
+        setEditingPost(state, action: PayloadAction<EditingPost>) {
+            state.edit = action.payload
+        },
+        setEditingPostContent(state, action: PayloadAction<string>) {
+            state.edit.content = action.payload
+        },
+        setEditingPostTagIds(state, action: PayloadAction<number[]>) {
+            state.edit.tag_ids = action.payload
+        },
+        appendAssetToEditingPost(state, action: PayloadAction<Asset>) {
+            state.edit.assets.push(action.payload)
+        },
+        deleteAsset(state, action: PayloadAction<number>) {
+            state.edit.assets.splice(action.payload, 1)
+        },
+        setUploadState(state, action: PayloadAction<boolean>) {
+            state.edit.assetUploading = action.payload
+        },
         clearPosts(state, action: Action) {
             state.posts = []
         },
@@ -95,6 +146,13 @@ export const {
     updatePost,
     favoritePost,
     unFavoritePost,
+    initEditingPost,
+    setEditingPost,
+    setEditingPostContent,
+    setEditingPostTagIds,
+    appendAssetToEditingPost,
+    deleteAsset,
+    setUploadState,
     clearPosts,
     setError
 } = postSlice.actions
@@ -139,7 +197,13 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
         dispatch(selectTagById(tag_id, false))
     })
 
-    const res = await api.post('/posts', editingPost, {})
+    const post = {
+        content: editingPost.content,
+        tag_ids: editingPost.tag_ids,
+        asset_ids: editingPost.assets.map((asset) => (asset.id))
+    }
+
+    const res = await api.post('/posts', post, {})
     if(res.status === 201) {
         const post = res.data as Post
         dispatch(setError(null))
@@ -168,6 +232,24 @@ export const postUnFavorite = (post: Post): AppThunk => async (dispatch, getStat
     const res = await api.delete(`/posts/${post.id}/favorite`)
     if(res.status === 200) {
         dispatch(unFavoritePost({ user, post }))
+    }
+}
+
+export const postAsset = (file: File): AppThunk => async (dispatch, getState) => {
+    const params = new FormData()
+    params.append('file', file)
+    dispatch(setUploadState(true))
+    console.log('UPLOADING...')
+    const res = await api.post(
+        'assets',
+        params,
+        { headers: { 'content-type': 'multipart/form-data' } }
+    )
+    dispatch(setUploadState(false))
+    console.log('FINISHED')
+    if( res.status === 201) {
+        const asset = res.data as Asset
+        dispatch(appendAssetToEditingPost(asset))
     }
 }
 

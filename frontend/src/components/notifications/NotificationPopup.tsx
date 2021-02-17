@@ -13,7 +13,6 @@ type Props = {
 const useStyles = makeStyles((theme) => ({
     popOverPaper: {
         padding: theme.spacing(1),
-        width: '300px',
         listStyle: 'none'
     },
     popOver: {
@@ -22,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
     chip: {
         marginBottom: theme.spacing(1)
-    }
+    },
 }))
 
 

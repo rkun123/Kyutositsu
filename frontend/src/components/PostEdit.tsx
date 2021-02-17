@@ -4,9 +4,11 @@ import React, { useState, ChangeEvent } from "react"
 import { createRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
-import { EditingPost, postPost } from "../store/post"
+import { postPost, setEditingPostContent, setEditingPostTagIds, initEditingPost } from "../store/post"
 import { Tag } from "../store/tag"
 import TagEditor from './TagEditor'
+import AssetsEdit from './assets/AssetsEdit'
+import AssetsList from './assets/AssetsList'
 
 const postMaxLetters = 200
 
@@ -23,6 +25,11 @@ const useStyles = makeStyles((theme) => ({
     },
     sendButton: {
         margin: `${theme.spacing(2)}px 0`
+    },
+    defaultFileButton: {
+        display: 'none',
+        position: 'absolute',
+        appearance: 'none'
     }
 }))
 
@@ -32,20 +39,17 @@ function PostEdit() {
     const dispatch = useDispatch()
 
     const tags = useSelector((state: RootState) => (state.tag.tags))
-    const apiError = useSelector((state: RootState) => (state.post.error))
-    const tag_ids = useSelector((state: RootState) => (state.settings.postTagIds))
+    const edit = useSelector((state: RootState) => (state.post.edit))
 
     const [ error, setError] = useState('')
     const [ contentLengthError, setContentLengthError] = useState<boolean>(true)
-    const [content, setContent] = useState('')
-    const [tagIds, setTagIds] = useState([] as number[])
 
     const ref = createRef()
 
     const tagById = (id: number) => tags.find((tag) => (tag.id === id))
 
     const setPostContent = (e: ChangeEvent<HTMLInputElement>) => {
-        setContent(e.target.value)
+        dispatch(setEditingPostContent(e.target.value))
     }
 
     const handlePostHotKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -55,36 +59,27 @@ function PostEdit() {
 
     const handleChangeTags = (e: React.ChangeEvent<{value: unknown}>) => {
         const tag_ids = e.target.value as number[]
-        setTagIds(tag_ids)
+        dispatch(setEditingPostTagIds(tag_ids))
     }
 
     const handlePostButton = (): void => {
-        if(content === '') {
+        if(edit.content === '') {
             setError("Empty content error")
             return
         }
-        if(tagIds.length === 0) {
+        if(edit.tag_ids.length === 0) {
             setError("Empty tags error")
             return
         }
         setError('')
-        const post = {
-            content,
-            tag_ids: tagIds
-        } as EditingPost
-        dispatch(postPost(post))
-
-        if(apiError === null) setContent('')
+        dispatch(postPost(edit))
+        dispatch(initEditingPost())
     }
 
     useEffect(() => {
-        setTagIds(tag_ids)
-    }, [tag_ids])
-
-    useEffect(() => {
-        if(content.length > postMaxLetters) setContentLengthError(true)
+        if(edit.content.length > postMaxLetters) setContentLengthError(true)
         else setContentLengthError(false)
-    }, [content])
+    }, [edit.content])
 
     return (
         <React.Fragment>
@@ -96,7 +91,7 @@ function PostEdit() {
                             <InputLabel>Tags</InputLabel>
                             <Select
                                 multiple
-                                value={tagIds}
+                                value={edit.tag_ids}
                                 onChange={handleChangeTags}
                                 renderValue={(tag_ids) => (
                                     <div className={classes.tags}>
@@ -123,20 +118,22 @@ function PostEdit() {
                             multiline
                             rows={6}
                             label="Content"
-                            value={content}
+                            value={edit.content}
                             onChange={setPostContent}
                             onKeyDown={handlePostHotKey}
                         />
                     </FormControl>
+                    <Box display="flex" alignItems="center" mt={2}>
+                        <Box width="100%" mr={1}>
+                            <LinearProgress variant="determinate" value={edit.content.length / postMaxLetters * 100} />
+                        </Box>
+                        <Box>
+                            <Typography variant="body2">{edit.content.length}</Typography>
+                        </Box>
+                    </Box>
+                    <AssetsEdit />
+                    <AssetsList />
                 </form>
-                <Box display="flex" alignItems="center" mt={2}>
-                    <Box width="100%" mr={1}>
-                        <LinearProgress variant="determinate" value={content.length / postMaxLetters * 100} />
-                    </Box>
-                    <Box>
-                        <Typography variant="body2">{content.length}</Typography>
-                    </Box>
-                </Box>
                 <Box display="flex" alignItems="center">
                     <Box>
                         <Button
@@ -152,9 +149,9 @@ function PostEdit() {
                     </Box>
                     <Box ml={2}>
                         {
-                            contentLengthError ? 
-                            <FormHelperText><span style={{color: 'red'}}>{ content.length }</span> / {postMaxLetters}</FormHelperText>
-                            :undefined
+                            contentLengthError
+                            ? <FormHelperText><span style={{color: 'red'}}>{ edit.content.length }</span> / {postMaxLetters}</FormHelperText>
+                            : undefined
                         }
                     </Box>
                 </Box>

@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
       resource :user_settings, only: [:show, :update]
 
+      resources :assets, only: [:show, :create, :delete]
+
       post '/favorites', to: 'favorites#create'
     end
   end

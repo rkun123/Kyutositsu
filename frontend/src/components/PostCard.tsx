@@ -6,6 +6,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
 import PostContextMenu from './PostContextMenu'
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
+import clsx from 'clsx'
 
 type Props = {
     post: Post,
@@ -18,19 +19,37 @@ type StyleProps = {
     postColor: string,
     cardWidth: number,
     cardHeight: number,
-    isSingleColumn: boolean
+    isSingleColumn: boolean,
+    thumbnail: string | undefined
 }
 
 const useStyles = makeStyles((theme) => ({
     tile: {
-        margin: 'none'
-    },
-    card: {
-        display: 'flex',
-        flexDirection: 'column',
+        margin: 'none',
         width: (props: StyleProps) => (props.isSingleColumn ? `${props.cardHeight}px` : `${props.cardWidth}px`),
         minHeight: (props: StyleProps) => (`${props.cardHeight}px`),
-        backgroundColor: (props: StyleProps) => (props.postColor)
+        height: '0px'
+    },
+    card: {
+        position: 'absolute',
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        height: '100%',
+        background: 'none',
+    },
+    background: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+    },
+    colorBackground: {
+        backgroundColor: (props: StyleProps) => (props.postColor),
+    },
+    imageBackground: {
+        backgroundImage: (props: StyleProps) => (`url("${props.thumbnail}")`),
+        backgroundSize: 'contain',
+        opacity: 0.2
     },
     title: {
         fontWeight: "bold"
@@ -66,6 +85,7 @@ function PostCard({post, columnWidth, isSingleColumn, isNotification = false}: P
         postColor: post.color,
         cardWidth: columnWidth * post.column_size,
         cardHeight: columnWidth,
+        thumbnail: post.assets.length > 0 ? post.assets[0].file.thumbnail.url : undefined,
         isSingleColumn
     })
     const dispatch = useDispatch()
@@ -102,6 +122,8 @@ function PostCard({post, columnWidth, isSingleColumn, isNotification = false}: P
         <GridListTile
             className={classes.tile}
         >
+            <div className={clsx(classes.background, classes.colorBackground)}></div>
+            <div className={clsx(classes.background, classes.imageBackground)}></div>
             <Paper
                 key={post.id}
                 square

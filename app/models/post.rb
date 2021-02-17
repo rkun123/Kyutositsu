@@ -7,6 +7,7 @@ class Post < ApplicationRecord
     has_many :tags, through: :taggings
     has_many :favorites
     has_many :favorite_users, source: :user, through: :favorites, dependent: :destroy
+    has_many :assets, dependent: :destroy
 
     validate :post_without_tags_is_disallowed
     validates :content, length: { minimum: 1, maximum: Rails.configuration.x.preferences.post[:postMaxLetters] }
@@ -16,9 +17,10 @@ class Post < ApplicationRecord
 
     after_update do
         tags.each do |tag|
+            serializer = PostSerializer.new(self)
             PostChannel.broadcast_to_update(
                 tag,
-                self.to_json(include: { user: {}, tags: {}, favorite_users: {}})
+                serializer.to_json(include: { user: {}, tags: {}, assets: {}, favorite_users: {}})
             )
         end
     end

@@ -75,7 +75,7 @@ class Api::V1::PostsController < Api::V1::ApplicationController
     # Only allow a trusted parameter "white list" through.
     def post_params
       # params.permit(:content, :color, taggings_attributes: [:id, :tag])
-      params.permit(:content, :color, tag_ids: [])
+      params.permit(:content, :color, tag_ids: [], asset_ids: [])
     end
 
     # Default serialization setting.
@@ -83,6 +83,7 @@ class Api::V1::PostsController < Api::V1::ApplicationController
       {
         user: {},
         tags: {},
+        assets: {},
         favorite_users: {}
       }
     end
