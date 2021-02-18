@@ -6,6 +6,7 @@ import { RootState } from './store/index'
 import Callback from './pages/Callback'
 import Home from './pages/Home'
 import Drawer from './components/Drawer'
+import Notify from './components/Notify'
 import { useDispatch, useSelector } from 'react-redux';
 import { Auth, initAuth } from './store/auth'
 import { CssBaseline, AppBar, makeStyles, Toolbar, Typography, Button, Avatar, IconButton } from '@material-ui/core';
@@ -103,6 +104,7 @@ function App() {
   return (
     <div className={clsx("App", classes.root, classes.drawerSpace, isDrawerOpen ? classes.drawerSpaceOn : undefined)}>
       <CssBaseline />
+      <Notify />
       <AppBar position="static" color="default" className={classes.appBar}>
         <div>
           <Toolbar>

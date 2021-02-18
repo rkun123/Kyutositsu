@@ -1,11 +1,10 @@
-import { TextField, Container, Button, Snackbar, makeStyles, Typography, FormControl, InputLabel, Select, Chip, MenuItem, Grid, LinearProgress, Box, FormHelperText } from "@material-ui/core"
-import { Alert } from "@material-ui/lab"
-import React, { useState, ChangeEvent } from "react"
-import { createRef, useEffect } from "react"
+import { TextField, Container, Button, makeStyles, Typography, FormControl, InputLabel, Select, Chip, MenuItem, Grid, LinearProgress, Box, FormHelperText } from "@material-ui/core"
+import React, { useState, ChangeEvent, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
 import { postPost, setEditingPostContent, setEditingPostTagIds, initEditingPost } from "../store/post"
 import { Tag } from "../store/tag"
+import { notify } from '../store/ui'
 import TagEditor from './TagEditor'
 import AssetsEdit from './assets/AssetsEdit'
 import AssetsList from './assets/AssetsList'
@@ -41,10 +40,7 @@ function PostEdit() {
     const tags = useSelector((state: RootState) => (state.tag.tags))
     const edit = useSelector((state: RootState) => (state.post.edit))
 
-    const [ error, setError] = useState('')
     const [ contentLengthError, setContentLengthError] = useState<boolean>(true)
-
-    const ref = createRef()
 
     const tagById = (id: number) => tags.find((tag) => (tag.id === id))
 
@@ -64,14 +60,21 @@ function PostEdit() {
 
     const handlePostButton = (): void => {
         if(edit.content === '') {
-            setError("Empty content error")
+            dispatch(notify({
+                message: 'Empty content error',
+                severity: 'error',
+                duration: 3000
+            }))
             return
         }
         if(edit.tag_ids.length === 0) {
-            setError("Empty tags error")
+            dispatch(notify({
+                message: 'Empty tags error',
+                severity: 'error',
+                duration: 3000
+            }))
             return
         }
-        setError('')
         dispatch(postPost(edit))
         dispatch(initEditingPost())
     }
@@ -156,13 +159,6 @@ function PostEdit() {
                     </Box>
                 </Box>
             </Container>
-            <Snackbar
-                ref={ref}
-                open={error !== ''}
-                autoHideDuration={5000}
-            >
-                <Alert variant="filled" severity="error">{error}</Alert>
-            </Snackbar>
         </React.Fragment>
     )
 }

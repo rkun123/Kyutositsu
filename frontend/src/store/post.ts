@@ -4,6 +4,7 @@ import api from '../utils/api'
 import { User } from './user'
 import { selectTagById, Tag } from './tag'
 import { setPostTagIds } from './settings/thunkActions'
+import { notify } from './ui'
 
 
 export type Post = {
@@ -236,17 +237,26 @@ export const postUnFavorite = (post: Post): AppThunk => async (dispatch, getStat
 }
 
 export const postAsset = (file: File): AppThunk => async (dispatch, getState) => {
+    // Validations
+    if( file.size > 5 * 1000 * 1000 ) {
+        // Asset's file size 5MB limit
+        dispatch(notify({
+            message: 'Asset File size exceeded.',
+            severity: 'error',
+            duration: 5000
+        }))
+        return
+    }
+
     const params = new FormData()
     params.append('file', file)
     dispatch(setUploadState(true))
-    console.log('UPLOADING...')
     const res = await api.post(
         'assets',
         params,
         { headers: { 'content-type': 'multipart/form-data' } }
     )
     dispatch(setUploadState(false))
-    console.log('FINISHED')
     if( res.status === 201) {
         const asset = res.data as Asset
         dispatch(appendAssetToEditingPost(asset))
