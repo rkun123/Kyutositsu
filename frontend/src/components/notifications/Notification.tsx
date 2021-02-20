@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     notification: {
         marginRight: theme.spacing(2),
         color: theme.palette.grey[300],
-        cursor: 'pointer'
+        cursor: 'pointer',
     }
 }))
 

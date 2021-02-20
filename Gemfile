@@ -59,3 +59,9 @@ gem 'rgb'
 gem 'pg'
 
 gem 'active_model_serializers', '~> 0.10.0'
+
+gem 'carrierwave'
+
+gem 'fog-aws'
+
+gem 'fog'

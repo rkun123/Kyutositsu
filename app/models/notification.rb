@@ -12,10 +12,20 @@ class Notification < ApplicationRecord
   private
 
   def broadcast
-    serialize = NotificationSerializer.new(self)
+    serializer = NotificationSerializer.new(self)
     NotificationChannel.broadcast_to(
       self.favorite.post.user,
-      serialize.to_json(include: 'favorite.**')
+      serializer.to_json(include: {
+        favorite: {
+          post: {
+            user: {},
+            tags: {},
+            assets: {},
+            favorite_users: {}
+          },
+          user: {}
+        }
+      })
     )
   end
 end

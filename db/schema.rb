@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_03_054004) do
+ActiveRecord::Schema.define(version: 2021_02_09_073357) do
+
+  create_table "assets", force: :cascade do |t|
+    t.integer "post_id"
+    t.string "file"
+    t.string "file_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id"], name: "index_assets_on_post_id"
+  end
 
   create_table "favorites", force: :cascade do |t|
     t.integer "user_id"
@@ -107,6 +116,7 @@ ActiveRecord::Schema.define(version: 2021_02_03_054004) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "assets", "posts"
   add_foreign_key "favorites", "posts"
   add_foreign_key "favorites", "users"
   add_foreign_key "notifications", "favorites"

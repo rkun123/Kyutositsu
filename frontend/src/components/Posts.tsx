@@ -19,15 +19,13 @@ function Posts() {
     const [columns, setColumns] = useState(1)
     const gridListRef = useRef(null)
 
-    const postState = useSelector((state: RootState) => {
-        return state.post
+    const posts = useSelector((state: RootState) => {
+        return state.post.posts
     })
 
-    const posts = postState.posts.map(post => {
-        return (
-            <PostCard post={post} isNotification={false} columnWidth={columnWidth} isSingleColumn={columns === 1 ? true : false} key={post.id}></PostCard>
-        )
-    })
+    const postElems = () => (posts.map(post => (
+        <PostCard post={post} isNotification={false} columnWidth={columnWidth} isSingleColumn={columns === 1 ? true : false} key={post.id}></PostCard>
+    )))
 
     useEffect(() => {
         if(!gridListRef.current) return
@@ -50,7 +48,7 @@ function Posts() {
 
     return (
         <GridList className={classes.root} style={{margin: 0}} ref={gridListRef}>
-            {posts}
+            { postElems() }
             <FetchNextPageButton />
         </GridList>
     )
