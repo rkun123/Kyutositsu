@@ -54,6 +54,7 @@ const initialEditingPost = {
 
 export type PostState = {
     posts: Array<Post>,
+    detailPost?: Post,
     edit: EditingPost,
     isFetching: boolean,
     assetUploading: boolean,
@@ -63,6 +64,7 @@ export type PostState = {
 
 const initialState = {
     posts: [],
+    detailPost: undefined,
     edit: initialEditingPost,
     isFetching: false,
     assetUploading: false,
@@ -119,6 +121,9 @@ const postSlice = createSlice({
         setEditingPostTagIds(state, action: PayloadAction<number[]>) {
             state.edit.tag_ids = action.payload
         },
+        setDetailPost(state, action: PayloadAction<Post | undefined>) {
+            state.detailPost = action.payload
+        },
         appendAssetToEditingPost(state, action: PayloadAction<Asset>) {
             state.edit.assets.push(action.payload)
         },
@@ -151,6 +156,7 @@ export const {
     setEditingPost,
     setEditingPostContent,
     setEditingPostTagIds,
+    setDetailPost,
     appendAssetToEditingPost,
     deleteAsset,
     setUploadState,
@@ -159,7 +165,7 @@ export const {
 } = postSlice.actions
 
 
-export const fetchPost = (addition: boolean): AppThunk => async (dispatch, getState) => {
+export const fetchPosts = (addition: boolean): AppThunk => async (dispatch, getState) => {
     // filtered selectedTags
     const offset = getState().post.posts.length
 
@@ -190,6 +196,15 @@ export const fetchPost = (addition: boolean): AppThunk => async (dispatch, getSt
         dispatch(setPostFetchingSuccessed(true))
     } else {
         dispatch(setPostFetchingSuccessed(false))
+    }
+}
+
+export const fetchPost = (id: number): AppThunk => async (dispatch, getState) => {
+    const res = await api.get(`/posts/${id}`)
+    if(res.status === 200) {
+        dispatch(setPostFetching(true))
+        const post = res.data as Post
+        dispatch(setDetailPost(post))
     }
 }
 

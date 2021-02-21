@@ -1,5 +1,5 @@
 import { makeStyles, Button, GridListTile } from '@material-ui/core'
-import { fetchPost } from '../store/post'
+import { fetchPosts } from '../store/post'
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +24,7 @@ function FetchNextPageButton() {
     const dispatch = useDispatch()
 
     const handleFetchNext = () => {
-        dispatch(fetchPost(true))
+        dispatch(fetchPosts(true))
     }
 
     return (
