@@ -6,6 +6,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
 import PostContextMenu from './PostContextMenu'
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom'
 import clsx from 'clsx'
 
 type Props = {
@@ -89,6 +90,7 @@ function PostCard({post, columnWidth, isSingleColumn, isNotification = false}: P
         isSingleColumn
     })
     const dispatch = useDispatch()
+    const history = useHistory()
 
     const [favoritedByMe, setFavoritedByMe] = useState(false)
 
@@ -103,6 +105,10 @@ function PostCard({post, columnWidth, isSingleColumn, isNotification = false}: P
     const handleFavorite = () => {
         if(!favoritedByMe) dispatch(postFavorite(post))
         else dispatch(postUnFavorite(post))
+    }
+
+    const handleShowDetail = () => {
+        history.push(`/posts/${post.id}`)
     }
 
     const cardBottomToolBox = () => (
@@ -124,46 +130,46 @@ function PostCard({post, columnWidth, isSingleColumn, isNotification = false}: P
         >
             <div className={clsx(classes.background, classes.colorBackground)}></div>
             <div className={clsx(classes.background, classes.imageBackground)}></div>
-            <Paper
-                key={post.id}
-                square
-                className={classes.card}
-            >
-                <CardHeader
-                    avatar={
-                        <Avatar
-                            src={ post.user.image }
-                        >{ post.user.nickname }</Avatar>
-                    }
-                    title={
-                        <div className={classes.titleContainer}>
-                            <Typography variant="h6">{ post.user.nickname }</Typography>
-                            { isNotification ? null : <PostContextMenu post={post}></PostContextMenu> }
-                        </div>
-                    }
-                    subheader={ post.created_at }
+                <Paper
+                    key={post.id}
+                    square
+                    className={classes.card}
                 >
-                </CardHeader>
-                <Container className={classes.content}>
-                    <div className={classes.tags}>
-                        {post.tags.map((tag) => (
-                            <Chip
-                                label={tag.name}
-                                className={classes.chip}
-                                size="small"
-                                variant="outlined"
-                                style={{backgroundColor: tag.color}}
-                            ></Chip>
-                        ))}
-                    </div>
-                    <Box display="flex" flexDirection="column" flexGrow="1" justifyContent="space-between">
-                        <Box>
-                            <Typography component="div" className={classes.content} dangerouslySetInnerHTML={{__html: post.raw_content}} />
+                    <CardHeader
+                        avatar={
+                            <Avatar
+                                src={ post.user.image }
+                            >{ post.user.nickname }</Avatar>
+                        }
+                        title={
+                            <div className={classes.titleContainer}>
+                                <Typography variant="h6">{ post.user.nickname }</Typography>
+                                { isNotification ? null : <PostContextMenu post={post}></PostContextMenu> }
+                            </div>
+                        }
+                        subheader={ post.created_at }
+                    >
+                    </CardHeader>
+                    <Container className={classes.content}>
+                        <div className={classes.tags}>
+                            {post.tags.map((tag) => (
+                                <Chip
+                                    label={tag.name}
+                                    className={classes.chip}
+                                    size="small"
+                                    variant="outlined"
+                                    style={{backgroundColor: tag.color}}
+                                ></Chip>
+                            ))}
+                        </div>
+                        <Box display="flex" flexDirection="column" flexGrow="2" justifyContent="space-between">
+                            <Box flexGrow={2} onClick={handleShowDetail}>
+                                <Typography component="div" className={classes.content} dangerouslySetInnerHTML={{__html: post.raw_content}} />
+                            </Box>
+                            { isNotification ? null : <Box> { cardBottomToolBox() } </Box> }
                         </Box>
-                        { isNotification ? null : <Box> { cardBottomToolBox() } </Box> }
-                    </Box>
-                </Container>
-            </Paper>
+                    </Container>
+                </Paper>
         </GridListTile>
     )
 

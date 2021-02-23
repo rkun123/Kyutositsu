@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk, APIError } from './index'
 import api, { errorToString } from '../utils/api'
 import { User } from './user'
-import { fetchPost } from './post'
+import { fetchPosts } from './post'
 import { subscribeChannel, unSubscribeChannel } from './subscribes/thunkActions'
 import { setSelectedTagIds } from './settings/thunkActions'
 
@@ -97,7 +97,7 @@ export const selectTag = (tag: Tag, refreshPost: boolean = true): AppThunk => (d
     dispatch(_selectTag(tag))
     dispatch(subscribeChannel(tag.id))
     dispatch(updateSelectedTagsSetting())
-    if(refreshPost) dispatch(fetchPost(false))
+    if(refreshPost) dispatch(fetchPosts(false))
 }
 
 export const selectTagById = (tag_id: number, refreshPost: boolean = true): AppThunk => (dispatch, getState) => {
@@ -112,7 +112,7 @@ export const unSelectTag = (tag: Tag, refreshPost: boolean = true): AppThunk => 
     dispatch(_unSelectTag(tag))
     dispatch(unSubscribeChannel(tag.id))
     dispatch(updateSelectedTagsSetting())
-    if(refreshPost) dispatch(fetchPost(false))
+    if(refreshPost) dispatch(fetchPosts(false))
 }
 
 export const setSelectedTagsById = (tag_ids: number[]): AppThunk => (dispatch, getState) => {
@@ -123,7 +123,7 @@ export const setSelectedTagsById = (tag_ids: number[]): AppThunk => (dispatch, g
         dispatch(_selectTag(tag))
         dispatch(subscribeChannel(tag.id))
     })
-    dispatch(fetchPost(false))
+    dispatch(fetchPosts(false))
 }
 
 export const postTag = (tag: Tag): AppThunk => async (dispatch, getState) => {

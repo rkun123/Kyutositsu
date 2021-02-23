@@ -18,9 +18,15 @@ Rails.application.routes.draw do
       resources :assets, only: [:show, :create, :delete]
 
       post '/favorites', to: 'favorites#create'
+
+      match '/*path', to: 'application#not_found', via: :all
     end
   end
+
   get '/auth/:provider/callback', to: 'sessions#create'
   get '/auth/logout', to: 'sessions#destroy'
+
+  # Frontend
+  get '/*path', to: 'home#index'
 
 end

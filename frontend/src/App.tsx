@@ -3,8 +3,8 @@ import clsx from 'clsx'
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { RootState } from './store/index'
-import Callback from './pages/Callback'
 import Home from './pages/Home'
+import Post from './pages/Post'
 import Drawer from './components/Drawer'
 import Notify from './components/Notify'
 import { useDispatch, useSelector } from 'react-redux';
@@ -74,7 +74,6 @@ function App() {
     if(localstorageAuthStr !== null && localstorageAuthStr !== '') {
       const localstorageAuth = JSON.parse(localstorageAuthStr) as Auth
       console.log('localstorageSNSAuth', localstorageAuth)
-      //dispatch(setAuth(localstorageSNSAuth))
       dispatch(initAuth())
     }
   }, [dispatch])
@@ -87,7 +86,6 @@ function App() {
   }, [userState])
 
   useEffect(() => {
-    //if(auth.authToken === '') getAuthFromLocalstorage()
     getAuthFromLocalstorage()
   }, [getAuthFromLocalstorage])
 
@@ -105,38 +103,38 @@ function App() {
     <div className={clsx("App", classes.root, classes.drawerSpace, isDrawerOpen ? classes.drawerSpaceOn : undefined)}>
       <CssBaseline />
       <Notify />
-      <AppBar position="static" color="default" className={classes.appBar}>
-        <div>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              onClick={handleDrawerToggle}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.title}>
-              C3SNS
-            </Typography>
-            {loginButton()}
-            <Avatar src={userState.user.image}></Avatar>
-          </Toolbar>
-        </div>
-      </AppBar>
-      <Drawer open={isDrawerOpen} />
-      <div className={classes.home}>
-        <div className={classes.drawerHeader}></div>
+      <Router>
+        <AppBar position="static" color="default" className={classes.appBar}>
+          <div>
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                onClick={handleDrawerToggle}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" color="inherit" className={classes.title}>
+                C3SNS
+              </Typography>
+              {loginButton()}
+              <Avatar src={userState.user.image}></Avatar>
+            </Toolbar>
+          </div>
+        </AppBar>
+        <Drawer open={isDrawerOpen} />
         <div className={classes.home}>
-        <Router>
-          <Switch>
-            <Route path="/callback"><Callback /></Route>
-            <Route path="/"><Home /></Route>
-          </Switch>
-        </Router>
-        <div className={classes.bottomTimeline}>
-          <NotificationsTimeline />
+          <div className={classes.drawerHeader}></div>
+          <div className={classes.home}>
+            <Home />
+            <Switch>
+              <Route path="/posts/:post_id" children={<Post />}></Route>
+            </Switch>
+            <div className={classes.bottomTimeline}>
+              <NotificationsTimeline />
+            </div>
+          </div>
         </div>
-        </div>
-      </div>
+      </Router>
     </div>
   );
 }
