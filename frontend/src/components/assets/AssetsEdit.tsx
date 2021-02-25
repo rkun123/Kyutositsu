@@ -47,7 +47,7 @@ function AssetsEdit() {
     return (
         <React.Fragment>
             <form>
-                <input type="file" className={classes.defaultFileButton} accept="image/*" ref={inputEl} multiple></input>
+                <input type="file" className={classes.defaultFileButton} accept=".jpg,.jpeg,.gif,.png" ref={inputEl} multiple></input>
                 <Button
                 onClick={handleOpenFileDialog}
                 disabled={uploading}

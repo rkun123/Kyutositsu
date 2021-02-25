@@ -35,6 +35,13 @@ function AssetPreview({ asset, idx }: Props) {
         dispatch(deleteAsset(idx))
     }
 
+    const isVideo = (url: string) => {
+        const array = url.split('.')
+        const ext = array[array.length - 1]
+        if(ext.match(/(jpg|jpeg|gif|png)/)) return false
+        else return true
+    }
+
     const image = () => (
         <img src={asset.file.url} alt={asset.id.toString()} className={classes.source}></img>
     )
@@ -43,8 +50,8 @@ function AssetPreview({ asset, idx }: Props) {
     )
 
     const source = () => {
-        if(asset.file_type === 'IMAGE') return image()
-        else if(asset.file_type === 'VIDEO') return video()
+        if(isVideo(asset.file.url)) return video()
+        else return image()
     }
 
     return (<Box className={classes.root}>
