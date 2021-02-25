@@ -64,12 +64,18 @@ const useStyles = makeStyles((theme) => ({
     chip: {
         marginRight: theme.spacing(1)
     },
-    content: {
+    contentContainer: {
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 1,
+    },
+    textContainer: {
+        position: 'relative',
+        overflow: 'hidden'
+    },
+    text: {
+        position: 'absolute',
         overflowWrap: 'anywhere',
-        marginBottom: theme.spacing(1)
     },
     tags: {
         display: 'flex',
@@ -150,7 +156,7 @@ function PostCard({post, columnWidth, isSingleColumn, isNotification = false}: P
                         subheader={ post.created_at }
                     >
                     </CardHeader>
-                    <Container className={classes.content}>
+                    <Container className={classes.contentContainer}>
                         <div className={classes.tags}>
                             {post.tags.map((tag) => (
                                 <Chip
@@ -163,8 +169,8 @@ function PostCard({post, columnWidth, isSingleColumn, isNotification = false}: P
                             ))}
                         </div>
                         <Box display="flex" flexDirection="column" flexGrow="2" justifyContent="space-between">
-                            <Box flexGrow={2} onClick={handleShowDetail}>
-                                <Typography component="div" className={classes.content} dangerouslySetInnerHTML={{__html: post.raw_content}} />
+                            <Box flexGrow={2} className={classes.textContainer} onClick={handleShowDetail}>
+                                <Typography component="div" className={classes.text} dangerouslySetInnerHTML={{__html: post.raw_content}} />
                             </Box>
                             { isNotification ? null : <Box> { cardBottomToolBox() } </Box> }
                         </Box>

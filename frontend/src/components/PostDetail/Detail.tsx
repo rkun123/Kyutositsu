@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => (createStyles({
         position: 'relative',
         margin: 'none',
         listStyle: 'none',
+        maxWidth: '80%'
     },
     card: {
         position: 'relative',
@@ -48,6 +49,7 @@ const useStyles = makeStyles((theme) => (createStyles({
         marginRight: theme.spacing(1)
     },
     content: {
+        overflowWrap: 'anywhere',
     },
     tags: {
         display: 'flex',
