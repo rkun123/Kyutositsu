@@ -1,9 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  post:
-  tag:
+tagging_one_one:
+  post: post_one
+  tag: tag_one
 
-two:
-  post:
-  tag:
+tagging_one_two:
+  post: post_one
+  tag: tag_two
+
+tagging_two_one:
+  post: post_one
+  tag: tag_two
+
+tagging_two_two:
+  post: post_two
+  tag: tag_two
