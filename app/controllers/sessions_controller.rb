@@ -28,8 +28,4 @@ class SessionsController < ApplicationController
         redirect_url
     end
 
-    def frontend_url
-        "#{ENV['FRONTEND_CORS_ORIGIN']}"
-    end
-
 end
