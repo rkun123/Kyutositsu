@@ -10,8 +10,45 @@
 ### フォロー/フォロワーではなくタグで投稿を一覧でき、サークル、会社などの組織内SNSとして便利
 組織内SNSであればユーザーを絞り込んで投稿を一覧するよりも、投稿内容についてのタグで絞り込むほうが便利であると考え、フォロ/フォロワーの代わりにタグで絞り込むシステムを採用。
 
-### その他一般的機能の実装(予定)
-通知、いいね機能など基本的なSNSの機能を実装(予定)
+### その他SNSとしての一般的機能
+通知、いいね機能など基本的なSNSの機能を実装。
+
+## 開発、運用
+\* **現在Discordアカウントを利用したログインにのみ対応**
+- ruby 2.6.6
+- Bundler 2.1.4
+- Node.js v12.18.4
+
+### 環境変数
+#### DiscordのOAuthキー発行
+Discord DevelopersのサイトよりOAuthの認証情報を発行
+
+#### `/.env`
+```
+REACT_APP_DISCORD_CLIENT_ID={DiscordのクライアントID}
+REACT_APP_DISCORD_CLIENT_SECRET={Discordのクライアントシークレット}
+REACT_APP_URL={デプロイ先URL}
+
+# S3を使用する場合↓
+ASSET_STORE_PROVIDER=AWS
+AWS_ACCESS_KEY_ID={S3のアクセスキー}
+AWS_SECRET_ACCESS_KEY={S3のシークレットアクセスキー}
+AWS_REGION={S3のリージョン}
+AWS_S3_BUCKET={S3のバケット名}
+```
+
+### バックエンド
+```
+$ rails db:migrate
+$ rails server
+```
+
+### フロントエンド
+```
+$ cd frontend
+$ yarn install
+$ yarn build
+```
 
 ## Contributor
 ### [rkun123](https://github.com/rkun123)
