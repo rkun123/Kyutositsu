@@ -40,7 +40,6 @@ module C3SNS
     config.middleware.use ActionDispatch::Session::CookieStore
     # config.middleware.use ActionDispatch::Session::RedisStore
     config.middleware.use ActionDispatch::Flash
-    config.action_cable.allowed_request_origins = ENV['FRONTEND_CORS_ORIGIN']
 
     config.x.preferences = config_for(:preferences)
   end
