@@ -16,10 +16,6 @@ import callbackURL from './utils/callbackURL'
 import NotificationsTimeline from './components/notifications/NotificationTimeline'
 
 
-type StyleProps = {
-  drawerWidth: number
-}
-
 const useStyle = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -40,9 +36,6 @@ const useStyle = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
-  },
-  drawerSpaceOn: {
-    marginLeft: (props: StyleProps) => props.drawerWidth
   },
   drawerSpace: {
     transition: 'margin-left 255ms cubic-bezier(0, 0, 0.2, 1) 0ms'
@@ -100,7 +93,7 @@ function App() {
   }
 
   return (
-    <div className={clsx("App", classes.root, classes.drawerSpace, isDrawerOpen ? classes.drawerSpaceOn : undefined)}>
+    <div className={clsx("App", classes.root, classes.drawerSpace)}>
       <CssBaseline />
       <Notify />
       <Router>
