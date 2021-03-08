@@ -27,7 +27,11 @@ Discord DevelopersのサイトよりOAuthの認証情報を発行
 ```
 REACT_APP_DISCORD_CLIENT_ID={DiscordのクライアントID}
 REACT_APP_DISCORD_CLIENT_SECRET={Discordのクライアントシークレット}
-REACT_APP_URL={デプロイ先URL}
+REACT_APP_URL={デプロイ先URL(https://も含めて)}
+
+# production環境の場合
+DATABASE_URL={PostgreSQLのURL}
+REDIS_URL={ActionCableに利用するRedisのURL}
 
 # S3を使用する場合↓
 ASSET_STORE_PROVIDER=AWS
