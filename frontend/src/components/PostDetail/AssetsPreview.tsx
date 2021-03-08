@@ -1,34 +1,39 @@
-import { makeStyles, createStyles, GridList, GridListTile } from "@material-ui/core"
+import { useState, useMemo } from 'react'
+import { Box } from "@material-ui/core"
 import { Asset } from '../../store/post'
+import AssetPreview from './AssetPreview'
+import ImageViewer from 'react-simple-image-viewer'
 
 type Props = {
     assets: Asset[]
 }
 
-const useStyles = makeStyles((theme) => createStyles({
-    thumbnail: {
-        width: 300
-    },
-    tile: {
-        width: '100%',
-        height: '100%'
+function AssetPreviews({ assets }: Props) {
+
+    const [ viewIndex, setViewIndex ] = useState<number | null>(null)
+
+    const assetsSourceList = useMemo(() => (assets.map((asset) => (asset.file.url))), [assets])
+
+    const showAssetDetail = (index: number) => {
+        setViewIndex(index)
     }
-}))
-
-function AssetsPreview({ assets }: Props) {
-    const classes = useStyles()
-
+    const closeAssetDetail = () => {
+        setViewIndex(null)
+    }
     return (
-        <GridList cellHeight="auto" cols={assets.length <= 1 ? 1 : 2}>
+        <Box display="flex" flexDirection="row" gridColumn>
             {
-                assets.map((asset) => (
-                    <GridListTile  className={classes.tile}>
-                        <img className={classes.thumbnail} src={asset.file.thumbnail.url} alt={asset.file.url}></img>
-                    </GridListTile>
+                assets.map((asset, index) => (
+                    <AssetPreview asset={asset} index={index} open={showAssetDetail} />
                 ))
             }
-        </GridList>
+            {
+                viewIndex !== null
+                ? <ImageViewer src={assetsSourceList} currentIndex={viewIndex} onClose={() => {closeAssetDetail()}} />
+                : null
+            }
+        </Box>
     )
 }
 
-export default AssetsPreview
+export default AssetPreviews

@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => (createStyles({
         position: 'relative',
         margin: 'none',
         listStyle: 'none',
-        maxWidth: '80%'
     },
     card: {
         position: 'relative',
