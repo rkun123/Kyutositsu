@@ -68,6 +68,7 @@
     "react-redux": "^7.2.2",
     "react-refresh": "^0.8.3",
     "react-router-dom": "^5.2.0",
+    "react-simple-image-viewer": "^0.0.8",
     "redux-thunk": "^2.3.0",
     "resolve": "1.18.1",
     "resolve-url-loader": "^3.1.2",
