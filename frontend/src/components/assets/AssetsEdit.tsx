@@ -1,4 +1,4 @@
-import { Button, makeStyles } from "@material-ui/core"
+import { Button, makeStyles, CircularProgress } from "@material-ui/core"
 import React, { useCallback } from "react"
 import { createRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -17,7 +17,7 @@ function AssetsEdit() {
     const classes = useStyles()
     const dispatch = useDispatch()
     const inputEl = createRef<HTMLInputElement>()
-    const uploading = useSelector((state: RootState) => (state.post.assetUploading))
+    const uploading = useSelector((state: RootState) => (state.post.edit.assetUploading))
 
     const handleFilesChanged = useCallback(() => {
         const files = inputEl.current?.files
@@ -54,7 +54,7 @@ function AssetsEdit() {
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}>
-                    Asset
+                    { uploading ? <CircularProgress size={24} /> : 'Asset'}
                 </Button>
                 </form>
         </React.Fragment>

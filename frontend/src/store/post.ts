@@ -57,7 +57,6 @@ export type PostState = {
     detailPost?: Post,
     edit: EditingPost,
     isFetching: boolean,
-    assetUploading: boolean,
     success: boolean,
     error: APIError | null
 }
@@ -67,7 +66,6 @@ const initialState = {
     detailPost: undefined,
     edit: initialEditingPost,
     isFetching: false,
-    assetUploading: false,
     success: false,
     error: null
 } as PostState
