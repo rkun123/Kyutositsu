@@ -30,7 +30,6 @@ function Posts() {
     useEffect(() => {
         if(!gridListRef.current) return
         const gridList = gridListRef.current! as HTMLUListElement
-        console.info(gridList)
         const calcColumnWidth = () => {
             const width = gridList.offsetWidth
             const numberOfColumns = Math.floor(width / 300)
@@ -40,10 +39,7 @@ function Posts() {
         }
 
         window.addEventListener('resize', calcColumnWidth)
-        calcColumnWidth()
-        //const observer = new MutationObserver(calcCardWidth)
-
-        //observer.observe(gridList, {attributes: true, attributeFilter: ['style']})
+        setTimeout(calcColumnWidth, 1000)
     }, [])
 
     return (
