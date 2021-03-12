@@ -4,6 +4,8 @@ class Favorite < ApplicationRecord
   has_one :notification, dependent: :destroy
   before_save :create_notification
   after_save :save_notification
+  validates :user, presence: true, uniqueness: { scope: [:user, :post] }
+  validates :post, presence: true, uniqueness: { scope: [:user, :post] }
 
   private
 

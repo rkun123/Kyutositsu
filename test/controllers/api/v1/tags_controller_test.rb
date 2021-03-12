@@ -5,8 +5,8 @@ class Api::V1::TagsControllerTest < ActionDispatch::IntegrationTest
   #   assert true
   # end
 
-  test "shoud create tag" do
-    get tags_url
+  test "should create tag" do
+    get api_v1_tags_url
     assert_response :success
   end
 end

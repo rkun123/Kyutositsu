@@ -1,11 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  created_by: MyString
-  references: MyString
+tag_one:
+  name: test-tag-1
+  created_by: user_one
 
-two:
-  name: MyString
-  created_by: MyString
-  references: MyString
+tag_two:
+  name: test-tag-2
+  created_by: user_two
