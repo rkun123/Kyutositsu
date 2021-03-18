@@ -40,7 +40,7 @@ export type Asset = {
 
 export type EditingPost = {
     content: string,
-    color: string,
+    color: string|undefined,
     tag_ids: number[],
     assetUploading: boolean,
     assets: Asset[]
@@ -48,7 +48,7 @@ export type EditingPost = {
 
 const initialEditingPost = {
     content: '',
-    color: '#FF0000',
+    color: undefined,
     tag_ids: [],
     assetUploading: false,
     assets: []
