@@ -1,8 +1,9 @@
 import { TextField, Container, Button, makeStyles, Typography, FormControl, InputLabel, Select, Chip, MenuItem, Grid, LinearProgress, Box, FormHelperText } from "@material-ui/core"
+import { ColorPicker } from 'material-ui-color'
 import React, { useState, ChangeEvent, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../store"
-import { postPost, setEditingPostContent, setEditingPostTagIds, initEditingPost } from "../store/post"
+import { postPost, setEditingPostContent, setEditingPostColor, setEditingPostTagIds, initEditingPost } from "../store/post"
 import { Tag } from "../store/tag"
 import { notify } from '../store/ui'
 import TagEditor from './TagEditor'
@@ -48,6 +49,10 @@ function PostEdit() {
         dispatch(setEditingPostContent(e.target.value))
     }
 
+    const setPostColor = (e: any) => {
+        dispatch(setEditingPostColor('#' + e.hex))
+    }
+
     const handlePostHotKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if(e.ctrlKey && e.key === 'Enter')
         handlePostButton()
@@ -88,6 +93,13 @@ function PostEdit() {
         <React.Fragment>
             <Container className={classes.root}>
                 <Typography variant="h6">New</Typography>
+                <ColorPicker
+                    defaultValue="red"
+                    hideTextfield
+                    value={edit.color}
+                    disableAlpha={true}
+                    onChange={setPostColor}
+                />
                 <form autoComplete="off">
                     <FormControl>
                         <Grid direction="row" alignItems="center">

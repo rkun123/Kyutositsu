@@ -40,6 +40,7 @@ export type Asset = {
 
 export type EditingPost = {
     content: string,
+    color: string,
     tag_ids: number[],
     assetUploading: boolean,
     assets: Asset[]
@@ -47,6 +48,7 @@ export type EditingPost = {
 
 const initialEditingPost = {
     content: '',
+    color: '#FF0000',
     tag_ids: [],
     assetUploading: false,
     assets: []
@@ -116,6 +118,9 @@ const postSlice = createSlice({
         setEditingPostContent(state, action: PayloadAction<string>) {
             state.edit.content = action.payload
         },
+        setEditingPostColor(state, action: PayloadAction<string>) {
+            state.edit.color = action.payload
+        },
         setEditingPostTagIds(state, action: PayloadAction<number[]>) {
             state.edit.tag_ids = action.payload
         },
@@ -153,6 +158,7 @@ export const {
     initEditingPost,
     setEditingPost,
     setEditingPostContent,
+    setEditingPostColor,
     setEditingPostTagIds,
     setDetailPost,
     appendAssetToEditingPost,
@@ -213,6 +219,7 @@ export const postPost = (editingPost: EditingPost): AppThunk => async (dispatch,
 
     const post = {
         content: editingPost.content,
+        color: editingPost.color,
         tag_ids: editingPost.tag_ids,
         asset_ids: editingPost.assets.map((asset) => (asset.id))
     }
