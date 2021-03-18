@@ -93,13 +93,6 @@ function PostEdit() {
         <React.Fragment>
             <Container className={classes.root}>
                 <Typography variant="h6">New</Typography>
-                <ColorPicker
-                    defaultValue="red"
-                    hideTextfield
-                    value={edit.color}
-                    disableAlpha={true}
-                    onChange={setPostColor}
-                />
                 <form autoComplete="off">
                     <FormControl>
                         <Grid direction="row" alignItems="center">
@@ -126,6 +119,13 @@ function PostEdit() {
                                 }
                             </Select>
                             <TagEditor />
+                            <ColorPicker
+                                defaultValue="red"
+                                hideTextfield
+                                value={edit.color}
+                                disableAlpha={true}
+                                onChange={setPostColor}
+                            />
                         </Grid>
                         <TextField
                             required
