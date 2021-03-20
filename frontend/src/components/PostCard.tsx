@@ -50,7 +50,8 @@ const useStyles = makeStyles((theme) => ({
     imageBackground: {
         backgroundImage: (props: StyleProps) => (`url("${props.thumbnail}")`),
         backgroundSize: 'contain',
-        opacity: 0.2
+        opacity: 0.2,
+        filter: 'blur(2px)'
     },
     title: {
         fontWeight: "bold"
