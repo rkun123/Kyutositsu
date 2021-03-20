@@ -119,6 +119,7 @@ function PostEdit() {
                                 }
                             </Select>
                             <TagEditor />
+                            <Typography variant="body1">Color</Typography>
                             <ColorPicker
                                 defaultValue="red"
                                 hideTextfield
