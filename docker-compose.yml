@@ -1,14 +1,20 @@
 version: '3'
 services:
   frontend:
-    build: ./frontend
+    image: node:12.18.4
     volumes:
-    - ./:/app/
-    command: yarn watch
-  backend:
-    build: .
-    volumes:
-    - ./:/app/
+    - ./frontend:/app/
+    command: sh entrypoint.sh
+    working_dir: /app
     ports:
     - "3000:3000"
+    env_file:
+    - .env
+  api:
+    image: ruby:2.6.6
+    volumes:
+    - ./api:/app/
     command: sh entrypoint.sh
+    working_dir: /app
+    env_file:
+    - .env

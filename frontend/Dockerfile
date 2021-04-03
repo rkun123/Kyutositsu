@@ -1,4 +1,6 @@
 FROM node:12.18.4
-WORKDIR /app
+WORKDIR /app/
+COPY yarn.lock ./
+COPY package.json ./
 
 RUN yarn install
