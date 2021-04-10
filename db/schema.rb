@@ -51,8 +51,6 @@ ActiveRecord::Schema.define(version: 2021_02_09_073357) do
   end
 
   create_table "taggings", force: :cascade do |t|
-    t.string "post"
-    t.string "tag"
     t.integer "tag_id"
     t.integer "post_id"
     t.datetime "created_at", null: false

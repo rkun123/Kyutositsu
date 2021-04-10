@@ -43,6 +43,7 @@ AWS_S3_BUCKET={S3のバケット名}
 
 ### バックエンド
 ```
+$ bundle install
 $ rails db:migrate
 $ rails server
 ```
