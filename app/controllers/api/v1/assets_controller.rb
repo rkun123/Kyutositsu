@@ -6,8 +6,7 @@ class Api::V1::AssetsController < Api::V1::ApplicationController
     end
 
     def create
-        @asset = Asset.new
-        @asset.file = asset_params[:file]
+        @asset = Asset.new(asset_params)
 
         if @asset.save
             render json: @asset, status: :created
@@ -19,6 +18,6 @@ class Api::V1::AssetsController < Api::V1::ApplicationController
     private
 
     def asset_params
-        params.permit(:id, :file)
+        params.permit(:id, :file, :file_type, :url)
     end
 end

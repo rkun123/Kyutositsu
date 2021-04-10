@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
+const testString = new RegExp('https://sketchfab.com/3d-models/(.+-)*([A-z0-9]+)$')
 
 function SketchfabAssetsEdit() {
     const classes = useStyles()
@@ -20,7 +21,6 @@ function SketchfabAssetsEdit() {
         url: ''
     })
     const [ urlError, setUrlError] = useState<boolean>(true)
-    const teststring = new RegExp('https://sketchfab.com/3d-models/(.+-)*([A-z0-9]+)$')
     const handleSketchfabAssetsButton = (): void => {
         dispatch(postSketchfabAsset(urlEdit.url!))
         setOriginUrl('')
@@ -34,11 +34,11 @@ function SketchfabAssetsEdit() {
         console.log(e.target.value)
     }
     useEffect(() => {
-        const result = teststring.test(originUrl)
+        const result = testString.test(originUrl)
         console.log(result)
         if(result) {
             setUrlError(false)
-            const modelsId = originUrl.match(teststring)
+            const modelsId = originUrl.match(testString)
             setUrlEdit({
                 id: 0,
                 file_type: 'sketchfab',
@@ -53,11 +53,8 @@ function SketchfabAssetsEdit() {
         <React.Fragment>
             <FormControl>
                 <TextField
-                    required
                     fullWidth
-                    multiline
-                    rows={6}
-                    label='sketchfab'
+                    label='Sketchfab URL'
                     value={originUrl}
                     onChange={setPostSketchfabAssets}
                     onKeyDown={handlePostHotKey}

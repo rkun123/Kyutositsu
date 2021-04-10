@@ -280,17 +280,15 @@ export const postAsset = (file: File): AppThunk => async (dispatch, getState) =>
 // debug: api呼び出し未実装　without posting to api
 export const postSketchfabAsset = (url: string): AppThunk => async (dispatch, getState) => {
     const asset = {
-        id: 0,
         file_type: "sketchfab",
-        file: {
-            url: '',
-            thumbnail: {
-                url: ''
-            }
-        },
         url: url
     } as Asset
-    dispatch(appendAssetToEditingPost(asset))
+    const res = await api.post('/assets', asset)
+    if(res.status === 201) {
+        const resAsset = res.data as Asset
+        console.debug(resAsset)
+        dispatch(appendAssetToEditingPost(resAsset))
+    }
 }
 
 export default postSlice

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_09_073357) do
+ActiveRecord::Schema.define(version: 2021_04_10_161911) do
 
   create_table "assets", force: :cascade do |t|
     t.integer "post_id"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2021_02_09_073357) do
     t.string "file_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "url"
     t.index ["post_id"], name: "index_assets_on_post_id"
   end
 
