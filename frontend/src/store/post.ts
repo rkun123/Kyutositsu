@@ -30,12 +30,13 @@ export type AssetUpload = {
 export type Asset = {
     id: number,
     file_type: string,
-    file: {
+    file?: {
         url: string,
         thumbnail: {
             url: string
         }
     },
+    url?: string
 }
 
 export type EditingPost = {
@@ -274,6 +275,22 @@ export const postAsset = (file: File): AppThunk => async (dispatch, getState) =>
         const asset = res.data as Asset
         dispatch(appendAssetToEditingPost(asset))
     }
+}
+
+// debug: api呼び出し未実装　without posting to api
+export const postSketchfabAsset = (url: string): AppThunk => async (dispatch, getState) => {
+    const asset = {
+        id: 0,
+        file_type: "sketchfab",
+        file: {
+            url: '',
+            thumbnail: {
+                url: ''
+            }
+        },
+        url: url
+    } as Asset
+    dispatch(appendAssetToEditingPost(asset))
 }
 
 export default postSlice
