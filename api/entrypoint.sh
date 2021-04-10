@@ -7,4 +7,4 @@ rails db:migrate
 
 rm -r /app/tmp/pids
 
-rails s
+rails s -b '0.0.0.0'
