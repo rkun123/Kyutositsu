@@ -7,6 +7,7 @@ import { Tag } from "../store/tag"
 import { notify } from '../store/ui'
 import TagEditor from './TagEditor'
 import AssetsEdit from './assets/AssetsEdit'
+import SketchfabAssetsEdit from './assets/SketchfabAssetsEdit'
 import AssetsList from './assets/AssetsList'
 
 const postMaxLetters = 200
@@ -135,6 +136,7 @@ function PostEdit() {
                         </Box>
                     </Box>
                     <AssetsEdit />
+                    <SketchfabAssetsEdit />
                     <AssetsList />
                 </form>
                 <Box display="flex" alignItems="center">

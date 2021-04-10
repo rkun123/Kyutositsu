@@ -35,6 +35,10 @@ function AssetPreview({ asset, idx }: Props) {
         dispatch(deleteAsset(idx))
     }
 
+    const iframe = () => (
+        <iframe src={asset.url!} className={classes.source}></iframe>
+    )
+
     const isVideo = (url: string) => {
         const array = url.split('.')
         const ext = array[array.length - 1]
@@ -43,15 +47,21 @@ function AssetPreview({ asset, idx }: Props) {
     }
 
     const image = () => (
-        <img src={asset.file.url} alt={asset.id.toString()} className={classes.source}></img>
+        <img src={asset.file!.url} alt={asset.id.toString()} className={classes.source}></img>
     )
     const video = () => (
-        <video src={asset.file.url} className={classes.source}></video>
+        <video src={asset.file!.url} className={classes.source}></video>
     )
 
     const source = () => {
-        if(isVideo(asset.file.url)) return video()
-        else return image()
+        if (asset.file_type === 'sketchfab') {
+            return iframe()
+        }
+        else {
+            if(isVideo(asset.file!.url)) return video()
+            else return image()    
+        }
+        console.log(asset.file_type)
     }
 
     return (<Box className={classes.root}>
